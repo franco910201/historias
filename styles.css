@@ -1,0 +1,1157 @@
+:root,
+[data-theme="light"] {
+  --bg-page: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-subtle: #f8fafc;
+  --bg-input: #ffffff;
+  --text-main: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --border-light: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --primary: #001aff;
+  --primary-hover: #0014cc;
+  --primary-soft: #eef2ff;
+  --pill-text: #188038;
+  --pill-bg: #e8f8ee;
+  --pill-focus-bg: #ffffff;
+  --pill-border: #34a853;
+  --pill-focus-ring: rgba(52, 168, 83, 0.34);
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --danger-border: #fecaca;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.06);
+  --shadow-fab: 0 12px 32px rgba(15, 23, 42, 0.22);
+}
+
+[data-theme="dark"] {
+  --bg-page: #0b1120;
+  --bg-card: #111827;
+  --bg-subtle: #1e293b;
+  --bg-input: #0f172a;
+  --text-main: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border-light: #1e293b;
+  --border-strong: #334155;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --primary-soft: rgba(59, 130, 246, 0.16);
+  --pill-text: #4ade80;
+  --pill-bg: rgba(22, 163, 74, 0.22);
+  --pill-focus-bg: #052e16;
+  --pill-border: #22c55e;
+  --pill-focus-ring: rgba(34, 197, 94, 0.38);
+  --danger: #f87171;
+  --danger-bg: rgba(220, 38, 38, 0.15);
+  --danger-border: rgba(248, 113, 113, 0.35);
+  --shadow-card: 0 12px 34px rgba(0, 0, 0, 0.45);
+  --shadow-fab: 0 14px 36px rgba(0, 0, 0, 0.6);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--bg-page);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.spa-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 14px 18px calc(96px + env(safe-area-inset-bottom, 0px));
+  gap: 14px;
+}
+
+/* Cabecera y Selector de Modo */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: var(--bg-card);
+  padding: 12px 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-card);
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--pill-bg);
+  border: 1.5px solid var(--pill-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.brand-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-title {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.pro-pill {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: var(--pill-text);
+  background: var(--pill-bg);
+  border: 1px solid var(--pill-border);
+}
+
+.brand-subtitle {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 11.5px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-strong);
+  border-radius: 5px;
+  color: var(--text-main);
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.view-switcher {
+  display: inline-flex;
+  background: var(--bg-page);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  gap: 4px;
+}
+
+.seg-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 14px;
+  border-radius: 9px;
+  cursor: pointer;
+  touch-action: manipulation;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.seg-btn.active {
+  background: var(--bg-card);
+  color: var(--primary);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+}
+
+.badge-count {
+  background: var(--primary);
+  color: #fff;
+  font-size: 11.5px;
+  padding: 1px 7px;
+  border-radius: 999px;
+}
+
+.theme-toggle-btn {
+  min-height: 40px;
+  padding: 7px 13px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border-strong);
+  background: var(--bg-subtle);
+  color: var(--text-main);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--primary);
+}
+
+/* Vistas SPA */
+.spa-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.spa-view[hidden] {
+  display: none !important;
+}
+
+/* ========================================================================= */
+/* VISTA 1: EXPANSOR DE PLANTILLAS                                           */
+/* ========================================================================= */
+.expander-layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.selector-bar {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: var(--shadow-card);
+}
+
+.selector-top-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.select-wrapper {
+  flex: 1 1 260px;
+}
+
+.select-wrapper select {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 14px;
+  font: inherit;
+  font-size: 16px; /* Evita auto-zoom en Safari iPadOS/iOS */
+  font-weight: 600;
+  color: var(--text-main);
+  background: var(--bg-subtle);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.select-wrapper select:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+.quick-command-box {
+  flex: 0 1 290px;
+}
+
+.quick-command-box input {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 14px;
+  font: inherit;
+  font-size: 16px;
+  color: var(--text-main);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-input);
+}
+
+.quick-command-box input:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+/* Barra táctil de tarjetas/chips de plantillas (ideal para iPad) */
+.template-touch-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: thin;
+}
+
+.tpl-touch-chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border-strong);
+  background: var(--bg-subtle);
+  color: var(--text-main);
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: all 0.14s ease;
+}
+
+.tpl-touch-chip:hover {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.tpl-touch-chip.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(0, 26, 255, 0.25);
+}
+
+.tpl-touch-chip .chip-cmd {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.12);
+}
+
+.tpl-touch-chip.active .chip-cmd {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+/* Tarjeta principal con Píldoras Verdes */
+.clinical-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.clinical-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 20px;
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.active-template-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cmd-pill-badge {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff;
+}
+
+.active-template-info h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.category-pill {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--border-light);
+  color: var(--text-secondary);
+}
+
+/* Controles táctiles Anterior / Siguiente píldora */
+.pill-nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pill-progress {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--pill-text);
+  background: var(--pill-bg);
+  border: 1px solid var(--pill-border);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.nav-pill-btn {
+  min-height: 38px;
+  padding: 6px 12px;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-main);
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.nav-pill-btn:active {
+  background: var(--bg-page);
+}
+
+/* Lienzo del texto clínico y Píldoras Verdes */
+.pill-canvas {
+  flex: 1;
+  padding: 22px 24px;
+  font-size: 16.5px;
+  line-height: 2.35;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  overflow-y: auto;
+  min-height: 260px;
+}
+
+/* PÍLDORAS VERDES: Estética original + Ergonomía táctil iPadOS + Modo Oscuro */
+.pill {
+  box-sizing: border-box;
+  max-width: 100%;
+  margin: 2px 2px;
+  padding: 3px 11px;
+  min-height: 34px;
+  font: inherit;
+  font-size: 16px; /* 16px evita zoom automático en Safari iOS/iPadOS */
+  line-height: 1.4;
+  vertical-align: baseline;
+  color: var(--pill-text);
+  background: var(--pill-bg);
+  border: 1.5px solid var(--pill-border);
+  border-radius: 999px;
+  outline: none;
+  transition: box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.pill::placeholder {
+  color: var(--pill-text);
+  opacity: 0.65;
+}
+
+.pill:focus {
+  background: var(--pill-focus-bg);
+  box-shadow: 0 0 0 4px var(--pill-focus-ring);
+}
+
+.measure {
+  position: fixed;
+  left: -9999px;
+  top: 0;
+  visibility: hidden;
+  white-space: pre;
+  pointer-events: none;
+}
+
+/* Vista previa desplegable en tiempo real */
+.live-output-preview {
+  border-top: 1px solid var(--border-light);
+  background: var(--bg-subtle);
+  padding: 10px 22px;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+}
+
+.live-output-preview summary {
+  cursor: pointer;
+  font-weight: 600;
+  user-select: none;
+}
+
+.assembled-preview-box {
+  margin: 10px 0 4px;
+  padding: 12px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+/* Barra inferior grande optimizada para pantallas táctiles (iPad) */
+.touch-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 16px 22px;
+  background: var(--bg-subtle);
+  border-top: 1px solid var(--border-light);
+}
+
+.keyboard-hints {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.primary-touch-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.btn-touch {
+  min-height: 54px;
+  padding: 12px 24px;
+  font: inherit;
+  font-size: 16.5px;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.08s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-touch:active {
+  transform: scale(0.98);
+}
+
+.btn-touch-primary {
+  background: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(0, 26, 255, 0.25);
+  min-width: 240px;
+}
+
+.btn-touch-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-touch-secondary {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border-color: var(--border-strong);
+}
+
+.btn-touch-secondary:hover {
+  background: var(--bg-page);
+}
+
+.btn-sm-touch {
+  min-height: 44px;
+  padding: 8px 18px;
+  font-size: 14.5px;
+  min-width: auto;
+}
+
+.btn-outline-touch {
+  min-height: 44px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.btn-outline-touch:hover {
+  background: var(--bg-subtle);
+}
+
+.btn-danger-touch {
+  min-height: 44px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--danger);
+  background: var(--danger-bg);
+  border: 1.5px solid var(--danger-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+/* ========================================================================= */
+/* BOTÓN FLOTANTE DE ACCIÓN RÁPIDA (FAB DOCK PARA IPAD Y ESCRITORIO)         */
+/* ========================================================================= */
+.floating-dock {
+  position: fixed;
+  right: 22px;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fab-btn {
+  min-height: 54px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  font: inherit;
+  font-size: 15.5px;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow-fab);
+  transition: transform 0.12s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.fab-btn:hover {
+  transform: translateY(-2px);
+}
+
+.fab-btn:active {
+  transform: scale(0.96);
+}
+
+.fab-primary {
+  background: #16a34a;
+  color: #ffffff;
+  border-color: #22c55e;
+}
+
+.fab-primary:hover {
+  background: #15803d;
+}
+
+.fab-secondary {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border-color: var(--border-strong);
+}
+
+.fab-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* ========================================================================= */
+/* VISTA 2: HOJA CLÍNICA ACUMULADA                                           */
+/* ========================================================================= */
+.notepad-layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.notepad-card {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.notepad-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 16px 22px;
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.notepad-header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.notepad-header p {
+  margin: 4px 0 0;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+}
+
+.notepad-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.clinical-sheet-textarea {
+  flex: 1;
+  width: 100%;
+  min-height: 420px;
+  border: none;
+  padding: 22px 24px;
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.7;
+  background: var(--bg-card);
+  color: var(--text-main);
+  resize: vertical;
+  outline: none;
+}
+
+/* ========================================================================= */
+/* VISTA 3: CONSTRUCTOR Y GESTOR DE PLANTILLAS                               */
+/* ========================================================================= */
+.builder-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.builder-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.builder-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 16px;
+  flex: 1;
+}
+
+@media (max-width: 860px) {
+  .builder-grid {
+    grid-template-columns: 1fr;
+  }
+  .primary-touch-buttons {
+    width: 100%;
+  }
+  .btn-touch {
+    flex: 1;
+  }
+  .floating-dock {
+    right: 14px;
+    left: 14px;
+    justify-content: flex-end;
+  }
+}
+
+.builder-sidebar {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 680px;
+}
+
+.builder-search {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 12px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--text-main);
+  background: var(--bg-input);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+}
+
+.builder-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.builder-item {
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid transparent;
+  background: var(--bg-subtle);
+  color: var(--text-main);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.builder-item.active {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+}
+
+.builder-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.builder-item-cmd {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 13px;
+}
+
+.builder-item-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-main);
+}
+
+.builder-editor-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-card);
+}
+
+#builderForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.builder-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.builder-form-header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.builder-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.builder-fields-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.field-col {
+  flex: 1 1 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-col-wide {
+  flex: 2 1 260px;
+}
+
+.field-col label {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.field-col input,
+.field-col textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 16px;
+  color: var(--text-main);
+  background: var(--bg-input);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+}
+
+.field-col textarea {
+  line-height: 1.65;
+  resize: vertical;
+}
+
+.pill-inserter-box {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pill-inserter-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.custom-pill-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.custom-pill-row input {
+  min-height: 40px;
+  padding: 6px 12px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--text-main);
+  background: var(--bg-input);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+}
+
+.btn-add-pill {
+  min-height: 40px;
+  padding: 6px 14px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--pill-text);
+  background: var(--pill-bg);
+  border: 1.5px solid var(--pill-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.quick-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill-chip {
+  min-height: 36px;
+  padding: 5px 12px;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--pill-text);
+  background: var(--pill-bg);
+  border: 1px solid var(--pill-border);
+  border-radius: 999px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.pill-chip:active {
+  transform: scale(0.96);
+}
+
+/* Modal de Sincronización */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 1000;
+}
+
+.modal-overlay[hidden] {
+  display: none !important;
+}
+
+.modal-dialog {
+  width: min(540px, 100%);
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.icon-close-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-main);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.modal-body {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-body p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.modal-label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.modal-input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 16px;
+  color: var(--text-main);
+  background: var(--bg-input);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+}
+
+.modal-hint {
+  font-size: 12.5px !important;
+}
+
+.modal-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 20px;
+  background: var(--bg-subtle);
+  border-top: 1px solid var(--border-light);
+}
+
+/* Avisos flotantes (Toast) */
+.toast-host {
+  position: fixed;
+  left: 50%;
+  bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.spa-toast {
+  background: #0f172a;
+  color: #ffffff;
+  border: 1px solid #334155;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  text-align: center;
+}

@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "Historias Clínicas – Expansor y Gestor de Plantillas",
+  "version": "2.0.0",
+  "description": "Expande y administra plantillas colaborativas de historia clínica (.MC, .EF, .EVO, .ORD y personalizadas) con píldoras navegables con Tab. Option+M (Alt+M) abre el selector.",
+  "permissions": [
+    "storage",
+    "clipboardWrite",
+    "clipboardRead"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Abrir Gestor de Plantillas Clínicas"
+  },
+  "options_page": "options.html",
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["templates.json"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

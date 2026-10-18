@@ -1,0 +1,10 @@
+{
+  "name": "Historias Clínicas · Expansor de Plantillas",
+  "short_name": "Historias Clínicas",
+  "description": "Web App de plantillas de historia clínica con píldoras verdes navegables con Tab y optimizada para iPadOS, Safari y Chrome.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f1f5f9",
+  "theme_color": "#001aff",
+  "lang": "es"
+}

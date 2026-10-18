@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestor de Plantillas Clínicas · Historias Clínicas</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Barra superior -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon">🩺</div>
+        <div>
+          <h1>Gestor Colaborativo de Plantillas Clínicas</h1>
+          <p class="subtitle">Crea, edita y comparte formatos con píldoras interactivas navegables con <kbd>Tab</kbd> · Atajo global: <kbd>Alt+M</kbd> / <kbd>Option+M</kbd></p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button type="button" id="btnSyncRemote" class="btn btn-secondary" title="Sincronizar desde URL compartida o Google Sheet">
+          🌐 Sincronizar URL / Sheet
+        </button>
+        <button type="button" id="btnImportJson" class="btn btn-secondary" title="Importar paquete de plantillas (.json)">
+          📥 Importar JSON
+        </button>
+        <input type="file" id="fileImportInput" accept=".json,application/json" hidden />
+        <button type="button" id="btnExportJson" class="btn btn-secondary" title="Exportar plantillas para compartir con el equipo médico">
+          📤 Exportar JSON
+        </button>
+        <button type="button" id="btnResetDefaults" class="btn btn-ghost" title="Restaurar plantillas originales (.MC, .EF, .EVO, .ORD)">
+          ↺ Restaurar base
+        </button>
+      </div>
+    </header>
+
+    <!-- Contenedor principal -->
+    <main class="workspace">
+      <!-- Columna izquierda: Catálogo de plantillas -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <button type="button" id="btnNewTemplate" class="btn btn-primary btn-block">
+            ＋ Nueva plantilla clínica
+          </button>
+          <div class="search-box">
+            <input type="search" id="searchInput" placeholder="Buscar por comando (.MC) o nombre..." autocomplete="off" />
+          </div>
+        </div>
+        <div id="templateList" class="template-list" role="listbox" aria-label="Lista de plantillas"></div>
+        <div class="sidebar-footer">
+          <span id="templateCount">0 plantillas activas</span>
+        </div>
+      </aside>
+
+      <!-- Columna central: Editor sin código -->
+      <section class="editor-pane">
+        <form id="templateForm" autocomplete="off">
+          <div class="pane-header">
+            <div>
+              <h2 id="editorTitle">Editar plantilla</h2>
+              <p class="pane-desc">Los cambios se guardan y actualizan al instante en todas tus pestañas abiertas.</p>
+            </div>
+            <div class="pane-header-actions">
+              <button type="button" id="btnDuplicate" class="btn btn-secondary btn-sm" title="Crear una copia de esta plantilla">
+                Duplicar
+              </button>
+              <button type="button" id="btnDelete" class="btn btn-danger btn-sm" title="Eliminar esta plantilla">
+                Eliminar
+              </button>
+              <button type="submit" id="btnSave" class="btn btn-primary">
+                💾 Guardar plantilla
+              </button>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="inputCommand">Comando disparador <span class="req">*</span></label>
+              <input type="text" id="inputCommand" required placeholder="Ej: .MC, .ING, .EPIC" maxlength="20" />
+              <small class="help-text">Al escribirlo en cualquier historia clínica se abrirá la plantilla.</small>
+            </div>
+
+            <div class="form-group">
+              <label for="inputLabel">Nombre del formato <span class="req">*</span></label>
+              <input type="text" id="inputLabel" required placeholder="Ej: Motivo de consulta, Evolución UCI" maxlength="80" />
+              <small class="help-text">Nombre descriptivo visible en el selector.</small>
+            </div>
+
+            <div class="form-group">
+              <label for="inputCategory">Servicio / Categoría</label>
+              <input type="text" id="inputCategory" placeholder="Ej: Ingreso, Evolución, Órdenes, Urgencias" maxlength="40" />
+              <small class="help-text">Ayuda a organizar plantillas por especialidad o momento.</small>
+            </div>
+          </div>
+
+          <!-- Barra visual para insertar Placeholders sin tocar código -->
+          <div class="placeholder-builder">
+            <div class="builder-header">
+              <span class="builder-title">💊 Insertar campo interactivo (Píldora verde) en el cursor:</span>
+              <div class="custom-pill-Adder">
+                <input type="text" id="customFieldName" placeholder="Nombre del nuevo campo (ej. Alergias)" maxlength="50" />
+                <button type="button" id="btnInsertCustomField" class="btn btn-pill-insert">
+                  ＋ Insertar campo
+                </button>
+              </div>
+            </div>
+            <div class="quick-pills" id="quickPillsBar">
+              <span class="quick-label">Campos rápidos:</span>
+              <button type="button" class="chip" data-field="Nombre">+ Nombre</button>
+              <button type="button" class="chip" data-field="Documento">+ Documento</button>
+              <button type="button" class="chip" data-field="Edad">+ Edad</button>
+              <button type="button" class="chip" data-field="Diagnóstico">+ Diagnóstico</button>
+              <button type="button" class="chip" data-field="TA">+ TA</button>
+              <button type="button" class="chip" data-field="FC">+ FC</button>
+              <button type="button" class="chip" data-field="FR">+ FR</button>
+              <button type="button" class="chip" data-field="Temperatura">+ Temperatura</button>
+              <button type="button" class="chip" data-field="SatO2">+ SatO2</button>
+              <button type="button" class="chip" data-field="Peso">+ Peso</button>
+              <button type="button" class="chip" data-field="Talla">+ Talla</button>
+              <button type="button" class="chip" data-field="Subjetivo">+ Subjetivo</button>
+              <button type="button" class="chip" data-field="Análisis">+ Análisis</button>
+              <button type="button" class="chip" data-field="Plan">+ Plan</button>
+            </div>
+          </div>
+
+          <div class="form-group body-group">
+            <div class="label-row">
+              <label for="inputBody">Contenido de la plantilla <span class="req">*</span></label>
+              <span class="syntax-tip">Usa el botón superior o escribe <code>{{Nombre del campo}}</code> para crear píldoras verdes</span>
+            </div>
+            <textarea id="inputBody" rows="12" required placeholder="Escribe aquí el formato de historia clínica..."></textarea>
+          </div>
+
+          <div class="detected-vars" id="detectedVarsContainer">
+            <span class="vars-label">Campos detectados (orden de Tab):</span>
+            <div id="detectedVarsList" class="vars-list"></div>
+          </div>
+        </form>
+      </section>
+
+      <!-- Columna derecha: Simulador en vivo de Píldoras Verdes y navegación Tab -->
+      <section class="preview-pane">
+        <div class="pane-header">
+          <div>
+            <h2>Vista previa interactiva</h2>
+            <p class="pane-desc">Prueba aquí mismo las píldoras verdes y la navegación con la tecla <kbd>Tab</kbd>.</p>
+          </div>
+          <div class="pane-header-actions">
+            <button type="button" id="btnClearPreview" class="btn btn-ghost btn-sm">Limpiar campos</button>
+            <button type="button" id="btnCopyPreview" class="btn btn-primary btn-sm">📋 Copiar resultado</button>
+          </div>
+        </div>
+
+        <div class="simulator-card">
+          <div class="simulator-header">
+            <span class="sim-badge" id="simCommandBadge">.MC</span>
+            <span class="sim-title" id="simLabelTitle">Motivo de consulta</span>
+          </div>
+          <div id="simulatorBody" class="simulator-body"></div>
+          <div class="simulator-footer">
+            <span>💡 Presiona <kbd>Tab</kbd> para saltar entre píldoras verdes. Los campos repetidos se sincronizan solos.</span>
+          </div>
+        </div>
+
+        <!-- Medidor invisible idéntico al de content.js -->
+        <span id="pillMeasure" class="pill measure"></span>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal para sincronizar con URL remota / Google Sheet publicada -->
+  <div id="syncModal" class="modal-backdrop" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="syncModalTitle">
+      <div class="modal-header">
+        <h3 id="syncModalTitle">🌐 Sincronizar plantillas del equipo médico</h3>
+        <button type="button" id="btnCloseSyncModal" class="btn-icon" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>Conecta un archivo <strong>JSON compartido</strong> (GitHub Gist, servidor institucional, Drive directo) o una <strong>Google Sheet publicada como CSV</strong> para que médicos e internos compartan el mismo catálogo.</p>
+        <div class="form-group">
+          <label for="inputRemoteUrl">URL del catálogo (JSON o Google Sheets CSV)</label>
+          <input type="url" id="inputRemoteUrl" placeholder="https://docs.google.com/spreadsheets/d/.../pub?output=csv o https://.../templates.json" />
+          <small class="help-text">
+            En Google Sheets: <em>Archivo → Compartir → Publicar en la web → Valores separados por comas (.csv)</em> con columnas: <code>command, label, category, body</code>.
+          </small>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="checkMergeRemote" checked />
+            <span>Combinar con mis plantillas locales (actualizar existentes y agregar nuevas sin borrar las mías)</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btnCancelSync" class="btn btn-secondary">Cancelar</button>
+        <button type="button" id="btnConfirmSync" class="btn btn-primary">Sincronizar ahora</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+  <script src="options.js"></script>
+</body>
+</html>

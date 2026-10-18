@@ -1,0 +1,30 @@
+[
+  {
+    "id": "tpl-mc",
+    "command": ".MC",
+    "label": "Motivo de consulta",
+    "category": "Ingreso",
+    "body": "NOTA: Se atiende paciente con medidas preventivas de bioseguridad y elementos de protección personal establecidas por protocolos de la OMS, Ministerio de Salud y Guías institucionales (Se usan todos los elementos de Protección Personal suministrados por la institución). Paciente que acude al servicio con tapabocas.\n\nIDENTIFICACIÓN: Paciente {{Name}} documento {{Age}} , ocupación: {{Access Code}} reside en el barrio {{Address City/Town/Locality}} natural de {{loca}} estado civil: {{Status}} {{Item}} hijos, convivencia: {{Patient Drug}} Correo electrónico y teléfono actualizados en la historia clínica.\n\nMOTIVO DE CONSULTA: \"{{Diagnosis}}\""
+  },
+  {
+    "id": "tpl-ef",
+    "command": ".EF",
+    "label": "Examen físico",
+    "category": "Examen",
+    "body": "EXAMEN FÍSICO:\nSignos vitales: TA {{TA}} mmHg, FC {{FC}} lpm, FR {{FR}} rpm, T° {{Temperatura}} °C, SatO2 {{SatO2}} %, Peso {{Peso}} kg, Talla {{Talla}} cm.\nAspecto general: {{Aspecto general}}\nCabeza y cuello: {{Cabeza y cuello}}\nTórax: {{Tórax}}\nCardiopulmonar: {{Cardiopulmonar}}\nAbdomen: {{Abdomen}}\nExtremidades: {{Extremidades}}\nNeurológico: {{Neurológico}}"
+  },
+  {
+    "id": "tpl-evo",
+    "command": ".EVO",
+    "label": "Evolución",
+    "category": "Evolución",
+    "body": "EVOLUCIÓN:\nPaciente {{Nombre}} en día {{Día de estancia}} de hospitalización por {{Diagnóstico}}.\nS: {{Subjetivo}}\nO: TA {{TA}} mmHg, FC {{FC}} lpm, FR {{FR}} rpm, T° {{Temperatura}} °C, SatO2 {{SatO2}} %. {{Hallazgos al examen}}\nA: {{Análisis}}\nP: {{Plan}}"
+  },
+  {
+    "id": "tpl-ord",
+    "command": ".ORD",
+    "label": "Órdenes médicas",
+    "category": "Órdenes",
+    "body": "ÓRDENES MÉDICAS:\nPaciente: {{Nombre}} Documento: {{Documento}}\n1. {{Medicamento}} {{Dosis}} vía {{Vía}} cada {{Frecuencia}} horas por {{Duración}} días.\n2. Paraclínicos: {{Paraclínicos}}\n3. Recomendaciones: {{Recomendaciones}}\n4. Control en {{Control}}.\n\nSe explican las indicaciones a {{Nombre}}, quien refiere entender y aceptar."
+  }
+]
