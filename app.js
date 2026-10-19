@@ -2,20 +2,90 @@
   'use strict';
 
   const STORAGE_KEY = 'hc_templates';
+  const CATALOG_VERSION_KEY = 'hc_catalog_version';
+  const CURRENT_CATALOG_VERSION = '2.2.0';
   const SHEET_STORAGE_KEY = 'hc_accumulated_sheet';
   const REMOTE_URL_KEY = 'hc_remote_url';
   const THEME_STORAGE_KEY = 'hc_theme';
-  const FIELD_RE = /\{\{\s*([^{}]+?)\s*\}\}/g;
+  const COPY_FORMAT_KEY = 'hc_copy_format';
 
-  // Catálogo completo de plantillas clínicas (.MC, .EF, .EVO, .ORD)
+  // Catálogo completo con Formato Rico y la nueva Plantilla Pediátrica Estándar (.PED / .PEDIATRIA)
   const DEFAULT_TEMPLATES = [
+    {
+      id: 'tpl-ped',
+      command: '.PED',
+      aliases: ['.PEDIATRIA'],
+      label: 'Historia clínica pediátrica',
+      category: 'Pediatría',
+      body:
+        '#### Identificación:\n' +
+        '**Nombre:** {{Nombre}}\n' +
+        '**Edad:** {{Edad}}\n' +
+        '**Fecha de nacimiento:** {{Fecha de nacimiento}}\n' +
+        '**Natural de:** {{Natural de}}\n' +
+        '**Residencia:** {{Residencia}}\n' +
+        '**Ocupación:** {{Ocupacion}}\n' +
+        '**Acompañante:** {{Acompanante}}\n\n' +
+        '#### Motivo de consulta:\n' +
+        '"{{Motivo de consulta}}"\n\n' +
+        '#### Enfermedad actual:\n' +
+        '{{Enfermedad actual}}\n\n' +
+        '#### Antecedentes\n' +
+        '**Prenatales:**\n' +
+        '- {{Prenatales}}\n\n' +
+        '**Perinatales:**\n' +
+        '- {{Perinatales}}\n\n' +
+        '**Patológicos:** {{Patologicos}}\n' +
+        '**Farmacológicos:** {{Farmacologicos}}\n' +
+        '**Alérgicos:** {{Alergicos}}\n' +
+        '**Inmunizaciones:** {{Inmunizaciones}}\n' +
+        '**Familiares:** {{Familiares}}\n' +
+        '**Hospitalizaciones:** {{Hospitalizaciones}}\n' +
+        '**Quirúrgicos:** {{Quirurgicos}}\n' +
+        '**Infecciones:** {{Infecciones}}\n' +
+        '**Traumáticos:** {{Traumaticos}}\n' +
+        '**Neurodesarrollo:** {{Neurodesarrollo}}\n' +
+        '**Alimentarios:** {{Alimentarios}}\n\n' +
+        '#### Revisión por sistemas\n' +
+        '**Síntomas generales:** {{Sintomas generales}}\n' +
+        '**Cabeza y cuello:** {{Cabeza y cuello}}\n' +
+        '**Cardiopulmonar:** {{Cardiopulmonar}}\n' +
+        '**Gastrointestinales:** {{Gastrointestinales}}\n' +
+        '**Genitourinario:** {{Genitourinario}}\n' +
+        '**Piel y anexos:** {{Piel y anexos}}\n' +
+        '**Neurológico:** {{Neurologico}}\n\n' +
+        '#### Examen físico\n' +
+        '**Triángulo de evaluación pediátrica**\n' +
+        '- **Apariencia:** {{Apariencia}}\n' +
+        '- **Trabajo respiratorio:** {{Trabajo respiratorio}}\n' +
+        '- **Circulación cutánea:** {{Circulacion cutanea}}\n\n' +
+        '**Signos vitales y antropometría:**\n' +
+        '- **Temperatura:** {{Temperatura}} °C\n' +
+        '- **Frecuencia cardiaca:** {{Frecuencia cardiaca}} lpm\n' +
+        '- **Frecuencia respiratoria:** {{Frecuencia respiratoria}} rpm\n' +
+        '- **Saturación:** {{Saturacion}} %\n' +
+        '- **Presión arterial:** {{Presion arterial}} mmHg\n' +
+        '- **Perímetro cefálico:** {{Perimetro cefalico}} cm\n' +
+        '- **Peso:** {{Peso}} kg\n' +
+        '- **Talla:** {{Talla}} cm\n' +
+        '- **Antropometría (Talla/Edad, Peso/Edad, Peso/Talla):** {{Antropometria}}\n\n' +
+        '**Examen físico general y segmentario:**\n' +
+        '{{Examen fisico general}}\n\n' +
+        '#### Análisis y plan\n' +
+        '{{Analisis y plan}}',
+    },
     {
       id: 'tpl-mc',
       command: '.MC',
       label: 'Motivo de consulta',
       category: 'Ingreso',
       body:
-        'NOTA: Se atiende paciente con medidas preventivas de bioseguridad y elementos de protección personal establecidas por protocolos de la OMS, Ministerio de Salud y Guías institucionales (Se usan todos los elementos de Protección Personal suministrados por la institución). Paciente que acude al servicio con tapabocas.\n\nIDENTIFICACIÓN: Paciente {{Name}} documento {{Age}} , ocupación: {{Access Code}} reside en el barrio {{Address City/Town/Locality}} natural de {{loca}} estado civil: {{Status}} {{Item}} hijos, convivencia: {{Patient Drug}} Correo electrónico y teléfono actualizados en la historia clínica.\n\nMOTIVO DE CONSULTA: "{{Diagnosis}}"',
+        '#### Nota de bioseguridad\n' +
+        'Se atiende paciente con medidas preventivas de bioseguridad y elementos de protección personal establecidas por protocolos de la OMS, Ministerio de Salud y Guías institucionales (Se usan todos los elementos de Protección Personal suministrados por la institución). Paciente que acude al servicio con tapabocas.\n\n' +
+        '#### Identificación:\n' +
+        'Paciente {{Name}} documento {{Age}}, **ocupación:** {{Access Code}}, reside en el barrio {{Address City/Town/Locality}}, natural de {{loca}}, **estado civil:** {{Status}}, {{Item}} hijos, **convivencia:** {{Patient Drug}}. Correo electrónico y teléfono actualizados en la historia clínica.\n\n' +
+        '#### Motivo de consulta:\n' +
+        '"{{Diagnosis}}"',
     },
     {
       id: 'tpl-ef',
@@ -23,15 +93,28 @@
       label: 'Examen físico',
       category: 'Examen',
       body:
-        'EXAMEN FÍSICO:\nSignos vitales: TA {{TA}} mmHg, FC {{FC}} lpm, FR {{FR}} rpm, T° {{Temperatura}} °C, SatO2 {{SatO2}} %, Peso {{Peso}} kg, Talla {{Talla}} cm.\nAspecto general: {{Aspecto general}}\nCabeza y cuello: {{Cabeza y cuello}}\nTórax: {{Tórax}}\nCardiopulmonar: {{Cardiopulmonar}}\nAbdomen: {{Abdomen}}\nExtremidades: {{Extremidades}}\nNeurológico: {{Neurológico}}',
+        '#### Examen físico\n' +
+        '**Signos vitales:** TA {{TA}} mmHg, FC {{FC}} lpm, FR {{FR}} rpm, T° {{Temperatura}} °C, SatO2 {{SatO2}} %, Peso {{Peso}} kg, Talla {{Talla}} cm.\n' +
+        '**Aspecto general:** {{Aspecto general}}\n' +
+        '**Cabeza y cuello:** {{Cabeza y cuello}}\n' +
+        '**Tórax:** {{Tórax}}\n' +
+        '**Cardiopulmonar:** {{Cardiopulmonar}}\n' +
+        '**Abdomen:** {{Abdomen}}\n' +
+        '**Extremidades:** {{Extremidades}}\n' +
+        '**Neurológico:** {{Neurológico}}',
     },
     {
       id: 'tpl-evo',
       command: '.EVO',
-      label: 'Evolución',
+      label: 'Evolución SOAP',
       category: 'Evolución',
       body:
-        'EVOLUCIÓN:\nPaciente {{Nombre}} en día {{Día de estancia}} de hospitalización por {{Diagnóstico}}.\nS: {{Subjetivo}}\nO: TA {{TA}} mmHg, FC {{FC}} lpm, FR {{FR}} rpm, T° {{Temperatura}} °C, SatO2 {{SatO2}} %. {{Hallazgos al examen}}\nA: {{Análisis}}\nP: {{Plan}}',
+        '#### Evolución médica\n' +
+        'Paciente {{Nombre}} en día {{Día de estancia}} de hospitalización por {{Diagnóstico}}.\n' +
+        '**S (Subjetivo):** {{Subjetivo}}\n' +
+        '**O (Objetivo):** TA {{TA}} mmHg, FC {{FC}} lpm, FR {{FR}} rpm, T° {{Temperatura}} °C, SatO2 {{SatO2}} %. {{Hallazgos al examen}}\n' +
+        '**A (Análisis):** {{Análisis}}\n' +
+        '**P (Plan):** {{Plan}}',
     },
     {
       id: 'tpl-ord',
@@ -39,17 +122,21 @@
       label: 'Órdenes médicas',
       category: 'Órdenes',
       body:
-        'ÓRDENES MÉDICAS:\nPaciente: {{Nombre}} Documento: {{Documento}}\n1. {{Medicamento}} {{Dosis}} vía {{Vía}} cada {{Frecuencia}} horas por {{Duración}} días.\n2. Paraclínicos: {{Paraclínicos}}\n3. Recomendaciones: {{Recomendaciones}}\n4. Control en {{Control}}.\n\nSe explican las indicaciones a {{Nombre}}, quien refiere entender y aceptar.',
+        '#### Órdenes médicas\n' +
+        '**Paciente:** {{Nombre}} · **Documento:** {{Documento}}\n' +
+        '1. **Medicamento:** {{Medicamento}} {{Dosis}} vía {{Vía}} cada {{Frecuencia}} horas por {{Duración}} días.\n' +
+        '2. **Paraclínicos:** {{Paraclínicos}}\n' +
+        '3. **Recomendaciones:** {{Recomendaciones}}\n' +
+        '4. **Control en:** {{Control}}.\n\n' +
+        'Se explican las indicaciones a {{Nombre}}, quien refiere entender y aceptar.',
     },
   ];
 
   // Estado global de la SPA
   let templates = [];
   let activeTemplate = null;
-  let currentView = 'expander';
   let editingId = null;
-  const valuesMap = new Map(); // Conserva valores entre plantillas si el campo se llama igual
-  let currentSegments = [];
+  const valuesMap = new Map();
   let allPillInputs = [];
   let focusablePills = [];
   let activePillIndex = 0;
@@ -81,14 +168,11 @@
   const btnPrevPill = document.getElementById('btnPrevPill');
   const btnNextPill = document.getElementById('btnNextPill');
   const pillCanvas = document.getElementById('pillCanvas');
-  const assembledPreviewText = document.getElementById('assembledPreviewText');
+  const assembledPreviewRich = document.getElementById('assembledPreviewRich');
+  const copyFormatSelect = document.getElementById('copyFormatSelect');
   const btnInsertToSheet = document.getElementById('btnInsertToSheet');
   const btnCopyMain = document.getElementById('btnCopyMain');
   const pillMeasureSpan = document.getElementById('pillMeasureSpan');
-
-  // Botones flotantes (FAB Dock para iPad y Escritorio)
-  const fabNewTemplate = document.getElementById('fabNewTemplate');
-  const fabQuickCopy = document.getElementById('fabQuickCopy');
 
   // Referencias Vista 2: Hoja Clínica Acumulada
   const clinicalSheetTextarea = document.getElementById('clinicalSheetTextarea');
@@ -105,6 +189,9 @@
   const tplLabel = document.getElementById('tplLabel');
   const tplCategory = document.getElementById('tplCategory');
   const tplBody = document.getElementById('tplBody');
+  const btnFmtHeading = document.getElementById('btnFmtHeading');
+  const btnFmtBold = document.getElementById('btnFmtBold');
+  const btnFmtBullet = document.getElementById('btnFmtBullet');
   const customPillInput = document.getElementById('customPillInput');
   const btnAddCustomPill = document.getElementById('btnAddCustomPill');
   const quickChipContainer = document.getElementById('quickChipContainer');
@@ -142,6 +229,8 @@
     let saved = null;
     try {
       saved = localStorage.getItem(THEME_STORAGE_KEY);
+      const savedCopyFmt = localStorage.getItem(COPY_FORMAT_KEY);
+      if (savedCopyFmt && copyFormatSelect) copyFormatSelect.value = savedCopyFmt;
     } catch (_) {}
     if (saved === 'dark' || saved === 'light') {
       applyTheme(saved);
@@ -159,10 +248,19 @@
     });
   }
 
+  if (copyFormatSelect) {
+    copyFormatSelect.addEventListener('change', () => {
+      try {
+        localStorage.setItem(COPY_FORMAT_KEY, copyFormatSelect.value);
+      } catch (_) {}
+      updateAssembledPreview();
+    });
+  }
+
   initTheme();
 
   // ---------------------------------------------------------------------------
-  // Persistencia Multiplataforma (localStorage + GitHub Pages templates.json)
+  // Persistencia y Actualización Automática de Catálogo (para incluir .PED)
   // ---------------------------------------------------------------------------
   const hasChromeStorage =
     typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local;
@@ -173,9 +271,15 @@
       .map((t, idx) => {
         let cmd = t.command.trim().toUpperCase();
         if (cmd && !cmd.startsWith('.')) cmd = '.' + cmd;
+        const aliases = Array.isArray(t.aliases)
+          ? t.aliases.map((a) => String(a).trim().toUpperCase())
+          : cmd === '.PED'
+          ? ['.PEDIATRIA']
+          : [];
         return {
           id: t.id || `tpl-${Date.now()}-${idx}`,
           command: cmd,
+          aliases,
           label: (t.label || cmd).trim(),
           category: (t.category || 'General').trim(),
           body: t.body,
@@ -185,15 +289,11 @@
   }
 
   async function loadCatalog() {
-    if (hasChromeStorage) {
-      const data = await chrome.storage.local.get([STORAGE_KEY, REMOTE_URL_KEY]);
-      if (data[REMOTE_URL_KEY]) remoteUrlInput.value = data[REMOTE_URL_KEY];
-      if (Array.isArray(data[STORAGE_KEY]) && data[STORAGE_KEY].length > 0) {
-        return normalizeTemplates(data[STORAGE_KEY]);
-      }
-    }
+    let storedList = null;
+    let storedVersion = null;
 
     try {
+      storedVersion = localStorage.getItem(CATALOG_VERSION_KEY);
       const savedUrl = localStorage.getItem(REMOTE_URL_KEY);
       if (savedUrl) remoteUrlInput.value = savedUrl;
       const savedSheet = localStorage.getItem(SHEET_STORAGE_KEY);
@@ -203,24 +303,42 @@
       if (raw) {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return normalizeTemplates(parsed);
+          storedList = normalizeTemplates(parsed);
         }
       }
     } catch (_) {}
 
+    if (!storedList && hasChromeStorage) {
+      const data = await chrome.storage.local.get([STORAGE_KEY, REMOTE_URL_KEY]);
+      if (data[REMOTE_URL_KEY]) remoteUrlInput.value = data[REMOTE_URL_KEY];
+      if (Array.isArray(data[STORAGE_KEY]) && data[STORAGE_KEY].length > 0) {
+        storedList = normalizeTemplates(data[STORAGE_KEY]);
+      }
+    }
+
+    // Si el catálogo guardado es de una versión anterior o no tiene .PED, fusionar con DEFAULT_TEMPLATES actualizados
+    if (storedList && storedVersion === CURRENT_CATALOG_VERSION) {
+      return storedList;
+    }
+
+    let baseDefaults = DEFAULT_TEMPLATES;
     try {
-      const res = await fetch('./templates.json');
+      const res = await fetch('./templates.json', { cache: 'no-store' });
       if (res.ok) {
         const json = await res.json();
-        if (Array.isArray(json) && json.length > 0) {
-          await saveCatalog(json);
-          return normalizeTemplates(json);
-        }
+        if (Array.isArray(json) && json.length > 0) baseDefaults = json;
       }
     } catch (_) {}
 
-    await saveCatalog(DEFAULT_TEMPLATES);
-    return normalizeTemplates(DEFAULT_TEMPLATES);
+    const finalCatalog = storedList
+      ? mergeCatalogs(baseDefaults, storedList, true)
+      : normalizeTemplates(baseDefaults);
+
+    await saveCatalog(finalCatalog);
+    try {
+      localStorage.setItem(CATALOG_VERSION_KEY, CURRENT_CATALOG_VERSION);
+    } catch (_) {}
+    return finalCatalog;
   }
 
   async function saveCatalog(list) {
@@ -228,6 +346,7 @@
     templates = normalized;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+      localStorage.setItem(CATALOG_VERSION_KEY, CURRENT_CATALOG_VERSION);
     } catch (_) {}
     if (hasChromeStorage) {
       try {
@@ -236,11 +355,43 @@
     }
   }
 
+  // Fusiona conservando las plantillas personalizadas del usuario y asegurando las nuevas (.PED)
+  function mergeCatalogs(defaultsOrExisting, incoming, preferDefaultsForBuiltin = false) {
+    const map = new Map();
+    for (const t of normalizeTemplates(defaultsOrExisting)) {
+      map.set(t.command.toUpperCase(), t);
+    }
+    for (const inc of normalizeTemplates(incoming)) {
+      const key = inc.command.toUpperCase();
+      if (map.has(key)) {
+        if (!preferDefaultsForBuiltin) {
+          const prev = map.get(key);
+          map.set(key, { ...prev, ...inc, id: prev.id });
+        }
+      } else {
+        map.set(key, inc);
+      }
+    }
+    return Array.from(map.values());
+  }
+
+  function findTemplateByTrigger(cmdInput) {
+    const clean = String(cmdInput || '').trim().toUpperCase();
+    if (!clean) return null;
+    const withDot = clean.startsWith('.') ? clean : '.' + clean;
+    return (
+      templates.find(
+        (t) =>
+          t.command.toUpperCase() === withDot ||
+          (Array.isArray(t.aliases) && t.aliases.includes(withDot))
+      ) || null
+    );
+  }
+
   // ---------------------------------------------------------------------------
   // Navegación entre las 3 vistas de la SPA
   // ---------------------------------------------------------------------------
   function switchView(mode) {
-    currentView = mode;
     const isExpander = mode === 'expander';
     const isNotePad = mode === 'notepad';
     const isBuilder = mode === 'builder';
@@ -272,30 +423,34 @@
   tabBuilder.addEventListener('click', () => switchView('builder'));
 
   // ---------------------------------------------------------------------------
-  // Motor de Píldoras Verdes (.pill) y Navegación con Tab / Táctil
+  // Motor de Formato Rico (#### Títulos, **Negritas**, Viñetas) + Píldoras Verdes
   // ---------------------------------------------------------------------------
-  function parseTemplate(body) {
-    const segments = [];
+  function tokenizeInline(lineText) {
+    // Reconoce **negrita** y {{Campo}} en la misma línea
+    const tokens = [];
+    const INLINE_RE = /\*\*([^*]+)\*\*|\{\{\s*([^{}]+?)\s*\}\}/g;
     let last = 0;
-    const text = String(body || '');
-    for (const m of text.matchAll(FIELD_RE)) {
-      if (m.index > last) segments.push({ type: 'text', value: text.slice(last, m.index) });
-      segments.push({ type: 'field', name: m[1] });
+    const str = String(lineText || '');
+    for (const m of str.matchAll(INLINE_RE)) {
+      if (m.index > last) {
+        tokens.push({ type: 'text', value: str.slice(last, m.index) });
+      }
+      if (m[1] !== undefined) {
+        tokens.push({ type: 'bold', content: m[1] });
+      } else if (m[2] !== undefined) {
+        tokens.push({ type: 'field', name: m[2].trim() });
+      }
       last = m.index + m[0].length;
     }
-    if (last < text.length) segments.push({ type: 'text', value: text.slice(last) });
-    return segments;
+    if (last < str.length) {
+      tokens.push({ type: 'text', value: str.slice(last) });
+    }
+    return tokens;
   }
 
   function resizePill(input) {
     pillMeasureSpan.textContent = input.value || input.placeholder || ' ';
-    input.style.width = Math.max(pillMeasureSpan.offsetWidth + 10, 48) + 'px';
-  }
-
-  function updateAssembledPreview() {
-    if (assembledPreviewText) {
-      assembledPreviewText.textContent = assembleCurrentText();
-    }
+    input.style.width = Math.max(pillMeasureSpan.offsetWidth + 8, 44) + 'px';
   }
 
   function renderSelectorControls() {
@@ -303,7 +458,9 @@
     for (const t of templates) {
       const opt = document.createElement('option');
       opt.value = t.command;
-      opt.textContent = `${t.command} · ${t.label} (${t.category || 'General'})`;
+      const aliasStr =
+        t.aliases && t.aliases.length ? ` / ${t.aliases.join(', ')}` : '';
+      opt.textContent = `${t.command}${aliasStr} · ${t.label} (${t.category || 'General'})`;
       templateSelect.appendChild(opt);
     }
     if (activeTemplate) {
@@ -337,9 +494,7 @@
   }
 
   function selectActiveTemplateByCommand(command, shouldFocusFirst = true) {
-    const cmdUpper = String(command || '').trim().toUpperCase();
-    const found =
-      templates.find((t) => t.command.toUpperCase() === cmdUpper) || templates[0];
+    const found = findTemplateByTrigger(command) || templates[0];
     if (!found) return;
     activeTemplate = found;
 
@@ -353,7 +508,7 @@
 
   function updatePillProgressUI() {
     if (!focusablePills.length) {
-      pillProgressText.textContent = 'Sin campos variables';
+      pillProgressText.textContent = '0 / 0';
       btnPrevPill.disabled = true;
       btnNextPill.disabled = true;
       return;
@@ -361,68 +516,125 @@
     btnPrevPill.disabled = false;
     btnNextPill.disabled = false;
     const bounded = Math.min(Math.max(activePillIndex, 0), focusablePills.length - 1);
-    pillProgressText.textContent = `Campo ${bounded + 1} de ${focusablePills.length}`;
+    pillProgressText.textContent = `${bounded + 1} / ${focusablePills.length}`;
+  }
+
+  function createPillInput(fieldName, groups) {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'pill';
+    input.placeholder = fieldName;
+    input.spellcheck = false;
+    input.autocomplete = 'off';
+    input.setAttribute('aria-label', fieldName);
+    input.value = valuesMap.get(fieldName) || '';
+
+    const group = groups.get(fieldName) || [];
+    const isPrimary = group.length === 0;
+    input.tabIndex = isPrimary ? 0 : -1;
+    group.push(input);
+    groups.set(fieldName, group);
+
+    if (isPrimary) {
+      const focusIdx = focusablePills.length;
+      focusablePills.push(input);
+      input.addEventListener('focus', () => {
+        activePillIndex = focusIdx;
+        updatePillProgressUI();
+      });
+    } else {
+      input.addEventListener('focus', () => {
+        const primaryIdx = focusablePills.indexOf(group[0]);
+        if (primaryIdx !== -1) activePillIndex = primaryIdx;
+        updatePillProgressUI();
+      });
+    }
+
+    input.addEventListener('input', () => {
+      valuesMap.set(fieldName, input.value);
+      for (const other of groups.get(fieldName)) {
+        if (other !== input) other.value = input.value;
+        resizePill(other);
+      }
+      updateAssembledPreview();
+    });
+
+    allPillInputs.push(input);
+    return input;
+  }
+
+  function appendTokensToElement(container, lineStr, groups) {
+    const tokens = tokenizeInline(lineStr);
+    for (const tk of tokens) {
+      if (tk.type === 'text') {
+        container.appendChild(document.createTextNode(tk.value));
+      } else if (tk.type === 'bold') {
+        const strong = document.createElement('strong');
+        strong.className = 'hc-bold';
+        // Permitir placeholders también dentro de negrita si existieran
+        appendTokensToElement(strong, tk.content, groups);
+        container.appendChild(strong);
+      } else if (tk.type === 'field') {
+        container.appendChild(createPillInput(tk.name, groups));
+      }
+    }
   }
 
   function renderPillCanvas(shouldFocusFirst = true) {
     if (!activeTemplate) return;
-    currentSegments = parseTemplate(activeTemplate.body);
     pillCanvas.textContent = '';
     allPillInputs = [];
     focusablePills = [];
     activePillIndex = 0;
 
     const groups = new Map();
+    const lines = String(activeTemplate.body || '').split(/\r?\n/);
 
-    for (const seg of currentSegments) {
-      if (seg.type === 'text') {
-        pillCanvas.appendChild(document.createTextNode(seg.value));
+    for (const rawLine of lines) {
+      const trimmed = rawLine.trim();
+      if (!trimmed) {
+        const spacer = document.createElement('div');
+        spacer.className = 'hc-empty-line';
+        pillCanvas.appendChild(spacer);
         continue;
       }
 
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.className = 'pill';
-      input.placeholder = seg.name;
-      input.spellcheck = false;
-      input.autocomplete = 'off';
-      input.setAttribute('aria-label', seg.name);
-      input.value = valuesMap.get(seg.name) || '';
-
-      const group = groups.get(seg.name) || [];
-      // Solo la primera aparición de cada variable entra en la secuencia de Tab
-      const isPrimary = group.length === 0;
-      input.tabIndex = isPrimary ? 0 : -1;
-      group.push(input);
-      groups.set(seg.name, group);
-
-      if (isPrimary) {
-        const focusIdx = focusablePills.length;
-        focusablePills.push(input);
-        input.addEventListener('focus', () => {
-          activePillIndex = focusIdx;
-          updatePillProgressUI();
-        });
-      } else {
-        input.addEventListener('focus', () => {
-          const primaryIdx = focusablePills.indexOf(group[0]);
-          if (primaryIdx !== -1) activePillIndex = primaryIdx;
-          updatePillProgressUI();
-        });
+      // 1. Encabezados Markdown (#### Título:, ### Título, etc.)
+      const headingMatch = rawLine.match(/^\s*#{1,6}\s+(.*)$/);
+      if (headingMatch) {
+        const h4 = document.createElement('h4');
+        h4.className = 'hc-heading';
+        appendTokensToElement(h4, headingMatch[1], groups);
+        pillCanvas.appendChild(h4);
+        continue;
       }
 
-      // Sincroniza todas las píldoras con el mismo nombre y ajusta su ancho en vivo
-      input.addEventListener('input', () => {
-        valuesMap.set(seg.name, input.value);
-        for (const other of groups.get(seg.name)) {
-          if (other !== input) other.value = input.value;
-          resizePill(other);
-        }
-        updateAssembledPreview();
-      });
+      // 2. Viñetas de lista (- Elemento o * Elemento)
+      const bulletMatch = rawLine.match(/^\s*[-*]\s+(.*)$/);
+      if (bulletMatch) {
+        const row = document.createElement('div');
+        row.className = 'hc-bullet-line';
+        const dot = document.createElement('span');
+        dot.className = 'hc-bullet-dot';
+        dot.textContent = '•';
+        row.appendChild(dot);
+        appendTokensToElement(row, bulletMatch[1], groups);
+        pillCanvas.appendChild(row);
+        continue;
+      }
 
-      pillCanvas.appendChild(input);
-      allPillInputs.push(input);
+      // 3. Línea estándar (con soporte automático para etiquetas "Campo:" al inicio si no usan **)
+      const lineDiv = document.createElement('div');
+      lineDiv.className = 'hc-line';
+      let processedLine = rawLine;
+      if (!rawLine.includes('**')) {
+        processedLine = rawLine.replace(
+          /^([A-ZÁÉÍÓÚÑ][A-Za-záéíóúñÁÉÍÓÚÑ0-9\s/(),-]{1,38}:)(\s|$)/,
+          '**$1**$2'
+        );
+      }
+      appendTokensToElement(lineDiv, processedLine, groups);
+      pillCanvas.appendChild(lineDiv);
     }
 
     focusablePills.forEach((pill, i) => {
@@ -448,7 +660,7 @@
     updatePillProgressUI();
   }
 
-  // Navegación impecable con la tecla Tab (ciclo cerrado entre píldoras verdes) y Enter
+  // Navegación con Tab (ciclo cerrado entre píldoras verdes) y Enter
   pillCanvas.addEventListener('keydown', (e) => {
     if (e.key === 'Tab') {
       if (!focusablePills.length) return;
@@ -486,47 +698,150 @@
   });
 
   quickCommandInput.addEventListener('input', () => {
-    const val = quickCommandInput.value.trim().toUpperCase();
+    const val = quickCommandInput.value.trim();
     if (!val) return;
-    const normalized = val.startsWith('.') ? val : '.' + val;
-    const exactMatch = templates.find((t) => t.command.toUpperCase() === normalized);
-    if (exactMatch) {
+    const match = findTemplateByTrigger(val);
+    if (match) {
       quickCommandInput.value = '';
-      selectActiveTemplateByCommand(exactMatch.command, true);
-      showToast(`⚡ Plantilla ${exactMatch.command} (${exactMatch.label}) seleccionada`);
+      selectActiveTemplateByCommand(match.command, true);
+      showToast(`Plantilla ${match.command} (${match.label}) activa`);
     }
   });
 
   btnResetFields.addEventListener('click', () => {
     valuesMap.clear();
     renderPillCanvas(true);
-    showToast('🧹 Campos limpiados');
+    showToast('Campos limpiados');
   });
 
   // ---------------------------------------------------------------------------
-  // Ensamblaje, Portapapeles (compatible con Safari / iPadOS) y Botones Flotantes
+  // Ensamblaje en Formato Rico (HTML), Markdown y Texto Limpio + Portapapeles
   // ---------------------------------------------------------------------------
-  function assembleCurrentText() {
-    return currentSegments
-      .map((seg) => (seg.type === 'text' ? seg.value : valuesMap.get(seg.name) || ''))
-      .join('');
+  function escapeHtml(s) {
+    return String(s || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
 
-  async function writeTextToClipboard(text) {
+  function replaceFieldsInString(rawText) {
+    return String(rawText || '').replace(/\{\{\s*([^{}]+?)\s*\}\}/g, (_, name) => {
+      return valuesMap.get(name.trim()) || '';
+    });
+  }
+
+  function buildFormattedOutputs(templateBody) {
+    const filledMarkdown = replaceFieldsInString(templateBody);
+    const lines = filledMarkdown.split(/\r?\n/);
+    const plainLines = [];
+    const htmlParts = [];
+
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) {
+        plainLines.push('');
+        htmlParts.push('<div style="height:8px;"></div>');
+        continue;
+      }
+
+      // Encabezado #### Título
+      const headingMatch = line.match(/^\s*#{1,6}\s+(.*)$/);
+      if (headingMatch) {
+        const cleanTitle = headingMatch[1].replace(/\*\*([^*]+)\*\*/g, '$1').trim();
+        plainLines.push(cleanTitle.toUpperCase());
+        htmlParts.push(
+          `<h4 style="margin:12px 0 4px;font-size:14.5px;font-weight:700;">${escapeHtml(cleanTitle)}</h4>`
+        );
+        continue;
+      }
+
+      // Viñeta - Elemento
+      const bulletMatch = line.match(/^\s*[-*]\s+(.*)$/);
+      if (bulletMatch) {
+        const content = bulletMatch[1];
+        const plainContent = content.replace(/\*\*([^*]+)\*\*/g, '$1');
+        plainLines.push(`- ${plainContent}`);
+        const htmlContent = escapeHtml(content).replace(
+          /\*\*([^*]+)\*\*/g,
+          '<strong>$1</strong>'
+        );
+        htmlParts.push(`<div style="margin:2px 0 2px 12px;">• ${htmlContent}</div>`);
+        continue;
+      }
+
+      // Línea normal con soporte de **negritas**
+      const plainLine = line.replace(/\*\*([^*]+)\*\*/g, '$1');
+      plainLines.push(plainLine);
+
+      let lineWithBold = line;
+      if (!line.includes('**')) {
+        lineWithBold = line.replace(
+          /^([A-ZÁÉÍÓÚÑ][A-Za-záéíóúñÁÉÍÓÚÑ0-9\s/(),-]{1,38}:)(\s|$)/,
+          '**$1**$2'
+        );
+      }
+      const htmlLine = escapeHtml(lineWithBold).replace(
+        /\*\*([^*]+)\*\*/g,
+        '<strong>$1</strong>'
+      );
+      htmlParts.push(`<div style="margin:2px 0;">${htmlLine}</div>`);
+    }
+
+    return {
+      markdown: filledMarkdown,
+      plain: plainLines.join('\n'),
+      html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px;line-height:1.55;color:#0f172a;">${htmlParts.join('')}</div>`,
+    };
+  }
+
+  function updateAssembledPreview() {
+    if (!assembledPreviewRich || !activeTemplate) return;
+    const out = buildFormattedOutputs(activeTemplate.body);
+    const mode = copyFormatSelect ? copyFormatSelect.value : 'rich';
+    if (mode === 'markdown') {
+      assembledPreviewRich.textContent = out.markdown;
+    } else if (mode === 'plain') {
+      assembledPreviewRich.textContent = out.plain;
+    } else {
+      assembledPreviewRich.innerHTML = out.html;
+    }
+  }
+
+  async function writeRichOrPlainToClipboard(outputs, mode = 'rich') {
+    const textToCopy = mode === 'markdown' ? outputs.markdown : outputs.plain;
+
     try {
+      if (
+        mode === 'rich' &&
+        navigator.clipboard &&
+        typeof window.ClipboardItem !== 'undefined'
+      ) {
+        const htmlBlob = new Blob([outputs.html], { type: 'text/html' });
+        const textBlob = new Blob([outputs.plain], { type: 'text/plain' });
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            'text/html': htmlBlob,
+            'text/plain': textBlob,
+          }),
+        ]);
+        return true;
+      }
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(text);
+        await navigator.clipboard.writeText(textToCopy);
         return true;
       }
     } catch (_) {}
+
+    // Fallback universal para Safari / iPadOS
     const ta = document.createElement('textarea');
-    ta.value = text;
+    ta.value = textToCopy;
     ta.setAttribute('readonly', '');
     ta.style.cssText = 'position:fixed;top:0;left:-9999px;opacity:0;';
     document.body.appendChild(ta);
     ta.focus();
     ta.select();
-    ta.setSelectionRange(0, text.length);
+    ta.setSelectionRange(0, textToCopy.length);
     let ok = false;
     try {
       ok = document.execCommand('copy');
@@ -536,53 +851,37 @@
   }
 
   async function copyCurrentTemplateToClipboard() {
-    const text = assembleCurrentText();
-    const ok = await writeTextToClipboard(text);
-    if (ok) {
-      showToast('✓ ¡Copiado al portapapeles con 1 toque!');
-    } else {
-      showToast('⚠️ No se pudo copiar automáticamente');
-    }
+    if (!activeTemplate) return;
+    const outputs = buildFormattedOutputs(activeTemplate.body);
+    const mode = copyFormatSelect ? copyFormatSelect.value : 'rich';
+    const ok = await writeRichOrPlainToClipboard(outputs, mode);
+    showToast(ok ? '✓ Copiado al portapapeles' : '⚠️ No se pudo copiar automáticamente');
   }
 
   btnCopyMain.addEventListener('click', copyCurrentTemplateToClipboard);
 
-  // Botón Flotante Principal: Copiar con 1 toque (copia la plantilla activa o la hoja acumulada)
-  if (fabQuickCopy) {
-    fabQuickCopy.addEventListener('click', async () => {
-      if (currentView === 'notepad' && clinicalSheetTextarea.value.trim()) {
-        const ok = await writeTextToClipboard(clinicalSheetTextarea.value.trim());
-        showToast(ok ? '✓ ¡Hoja Clínica copiada con 1 toque!' : '⚠️ No se pudo copiar');
-        return;
-      }
-      await copyCurrentTemplateToClipboard();
-    });
-  }
-
-  // Botón Flotante Secundario: Nueva Plantilla con 1 toque
-  if (fabNewTemplate) {
-    fabNewTemplate.addEventListener('click', () => {
-      switchView('builder');
-      startNewTemplateInBuilder();
-    });
-  }
-
   btnInsertToSheet.addEventListener('click', async () => {
-    const text = assembleCurrentText();
+    if (!activeTemplate) return;
+    const outputs = buildFormattedOutputs(activeTemplate.body);
+    const mode = copyFormatSelect ? copyFormatSelect.value : 'rich';
+    const blockText = mode === 'markdown' ? outputs.markdown : outputs.plain;
     const currentSheet = clinicalSheetTextarea.value.trim();
-    clinicalSheetTextarea.value = currentSheet ? `${currentSheet}\n\n${text}` : text;
+    clinicalSheetTextarea.value = currentSheet ? `${currentSheet}\n\n${blockText}` : blockText;
     try {
       localStorage.setItem(SHEET_STORAGE_KEY, clinicalSheetTextarea.value);
     } catch (_) {}
     noteInsertionCount++;
     noteBadge.hidden = false;
     noteBadge.textContent = String(noteInsertionCount);
-    await writeTextToClipboard(clinicalSheetTextarea.value);
-    showToast('➕ Enviado a Hoja Clínica y copiado al portapapeles');
+    await writeRichOrPlainToClipboard(
+      buildFormattedOutputs(clinicalSheetTextarea.value),
+      mode
+    );
+    showToast('✓ Añadido a la Hoja Acumulada y copiado');
   });
 
   // ---------------------------------------------------------------------------
-  // Vista 2: Hoja Clínica Acumulada (con expansión al escribir .MC, .EF, etc.)
+  // Vista 2: Hoja Clínica Acumulada (con detección de .PED, .MC, .EF, etc.)
   // ---------------------------------------------------------------------------
   clinicalSheetTextarea.addEventListener('input', () => {
     try {
@@ -592,30 +891,30 @@
     const pos = clinicalSheetTextarea.selectionStart;
     if (pos == null) return;
     const beforeCursor = clinicalSheetTextarea.value.slice(0, pos);
-    for (const t of templates) {
-      const cmd = t.command;
-      const re = new RegExp(`(?:^|\\s)(${cmd.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})$`, 'i');
-      const m = beforeCursor.match(re);
-      if (m) {
-        const start = pos - m[1].length;
+    const wordMatch = beforeCursor.match(/(?:^|\s)(\.[A-Za-z0-9_-]{2,15})$/);
+    if (wordMatch) {
+      const matchedTpl = findTemplateByTrigger(wordMatch[1]);
+      if (matchedTpl) {
+        const start = pos - wordMatch[1].length;
         clinicalSheetTextarea.setRangeText('', start, pos, 'end');
         localStorage.setItem(SHEET_STORAGE_KEY, clinicalSheetTextarea.value);
         switchView('expander');
-        selectActiveTemplateByCommand(t.command, true);
-        showToast(`⚡ Rellena ${t.command} y pulsa "Enviar a Hoja Clínica"`);
-        break;
+        selectActiveTemplateByCommand(matchedTpl.command, true);
+        showToast(`Plantilla ${matchedTpl.command} abierta`);
       }
     }
   });
 
   btnCopySheet.addEventListener('click', async () => {
-    const text = clinicalSheetTextarea.value.trim();
-    if (!text) {
-      showToast('⚠️ La hoja clínica está vacía');
+    const raw = clinicalSheetTextarea.value.trim();
+    if (!raw) {
+      showToast('La hoja acumulada está vacía');
       return;
     }
-    const ok = await writeTextToClipboard(text);
-    showToast(ok ? '✓ Historia clínica completa copiada al portapapeles' : '⚠️ Error al copiar');
+    const outputs = buildFormattedOutputs(raw);
+    const mode = copyFormatSelect ? copyFormatSelect.value : 'rich';
+    const ok = await writeRichOrPlainToClipboard(outputs, mode);
+    showToast(ok ? '✓ Hoja clínica copiada al portapapeles' : '⚠️ Error al copiar');
   });
 
   btnClearSheet.addEventListener('click', () => {
@@ -627,11 +926,11 @@
     try {
       localStorage.removeItem(SHEET_STORAGE_KEY);
     } catch (_) {}
-    showToast('🗑️ Hoja clínica vaciada');
+    showToast('Hoja clínica vaciada');
   });
 
   // ---------------------------------------------------------------------------
-  // Vista 3: Constructor y Gestor Visual de Plantillas Sin Código
+  // Vista 3: Constructor y Gestor Visual de Plantillas
   // ---------------------------------------------------------------------------
   function renderBuilderList() {
     const q = (builderSearch.value || '').trim().toLowerCase();
@@ -690,12 +989,12 @@
 
   function startNewTemplateInBuilder() {
     editingId = null;
-    builderFormTitle.textContent = 'Nueva Plantilla Clínica';
+    builderFormTitle.textContent = 'Nueva plantilla clínica';
     tplCommand.value = '.NOTA';
     tplLabel.value = 'Nueva Nota Clínica';
     tplCategory.value = 'General';
     tplBody.value =
-      'NOTA CLÍNICA:\nPaciente {{Nombre}} con documento {{Documento}}.\nMotivo / Hallazgos: {{Hallazgos}}\nPlan: {{Plan}}';
+      '#### Identificación:\n**Paciente:** {{Nombre}} · **Documento:** {{Documento}}\n\n#### Evaluación:\n{{Hallazgos}}\n\n#### Análisis y plan:\n{{Plan}}';
     btnDeleteTpl.disabled = true;
     btnDuplicateTpl.disabled = true;
     renderBuilderList();
@@ -706,16 +1005,29 @@
   btnNewTemplate.addEventListener('click', startNewTemplateInBuilder);
   builderSearch.addEventListener('input', renderBuilderList);
 
+  function insertTextAtBuilderCursor(snippet) {
+    const start = tplBody.selectionStart ?? tplBody.value.length;
+    const end = tplBody.selectionEnd ?? tplBody.value.length;
+    tplBody.focus();
+    tplBody.setRangeText(snippet, start, end, 'end');
+  }
+
   function insertPlaceholderIntoBuilder(varName) {
     const clean = String(varName || '')
       .replace(/[{}]/g, '')
       .trim();
     if (!clean) return;
-    const token = `{{${clean}}}`;
-    const start = tplBody.selectionStart ?? tplBody.value.length;
-    const end = tplBody.selectionEnd ?? tplBody.value.length;
-    tplBody.focus();
-    tplBody.setRangeText(token, start, end, 'end');
+    insertTextAtBuilderCursor(`{{${clean}}}`);
+  }
+
+  if (btnFmtHeading) {
+    btnFmtHeading.addEventListener('click', () => insertTextAtBuilderCursor('\n#### Nuevo título:\n'));
+  }
+  if (btnFmtBold) {
+    btnFmtBold.addEventListener('click', () => insertTextAtBuilderCursor('**Etiqueta:** '));
+  }
+  if (btnFmtBullet) {
+    btnFmtBullet.addEventListener('click', () => insertTextAtBuilderCursor('\n- '));
   }
 
   btnAddCustomPill.addEventListener('click', () => {
@@ -755,7 +1067,7 @@
       (t) => t.command.toUpperCase() === cmd && t.id !== editingId
     );
     if (duplicate) {
-      showToast(`⚠️ El comando ${cmd} ya existe en "${duplicate.label}"`);
+      showToast(`⚠️ El atajo ${cmd} ya existe en "${duplicate.label}"`);
       tplCommand.focus();
       return;
     }
@@ -774,7 +1086,7 @@
     await saveCatalog(templates);
     selectActiveTemplateByCommand(cmd, false);
     switchView('expander');
-    showToast(`💾 Plantilla ${cmd} guardada y lista para rellenar`);
+    showToast(`✓ Plantilla ${cmd} guardada`);
   });
 
   btnDuplicateTpl.addEventListener('click', async () => {
@@ -808,7 +1120,7 @@
     await saveCatalog(templates);
     loadTemplateIntoBuilder(templates[0].id);
     selectActiveTemplateByCommand(templates[0].command, false);
-    showToast(`🗑️ Plantilla ${current.command} eliminada`);
+    showToast(`Plantilla ${current.command} eliminada`);
   });
 
   // ---------------------------------------------------------------------------
@@ -824,7 +1136,7 @@
     a.download = `plantillas-clinicas-${date}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    showToast('📤 Archivo JSON descargado para compartir');
+    showToast('Catálogo JSON exportado');
   });
 
   btnImportJson.addEventListener('click', () => {
@@ -846,19 +1158,19 @@
       await saveCatalog(merged);
       selectActiveTemplateByCommand(templates[0].command, false);
       renderBuilderList();
-      showToast(`📥 ${imported.length} plantillas importadas`);
+      showToast(`✓ ${imported.length} plantillas importadas`);
     } catch (_) {
       showToast('⚠️ Archivo JSON inválido');
     }
   });
 
   btnRestoreDefaults.addEventListener('click', async () => {
-    if (!confirm('¿Restaurar las plantillas base (.MC, .EF, .EVO, .ORD)?')) return;
-    const merged = mergeCatalogs(templates, DEFAULT_TEMPLATES);
+    if (!confirm('¿Restaurar las plantillas oficiales (.PED, .MC, .EF, .EVO, .ORD)?')) return;
+    const merged = mergeCatalogs(DEFAULT_TEMPLATES, templates, true);
     await saveCatalog(merged);
     selectActiveTemplateByCommand(templates[0].command, false);
     loadTemplateIntoBuilder(templates[0].id);
-    showToast('↺ Catálogo base restaurado');
+    showToast('✓ Catálogo oficial restaurado');
   });
 
   btnOpenSyncModal.addEventListener('click', () => {
@@ -910,29 +1222,14 @@
       selectActiveTemplateByCommand(templates[0].command, false);
       loadTemplateIntoBuilder(templates[0].id);
       closeSyncDialog();
-      showToast(`🌐 ${validRemote.length} plantillas sincronizadas con éxito`);
+      showToast(`✓ ${validRemote.length} plantillas sincronizadas`);
     } catch (err) {
-      showToast(`⚠️ No se pudo sincronizar: ${err.message}`);
+      showToast(`⚠️ Error: ${err.message}`);
     } finally {
       btnExecuteSync.disabled = false;
-      btnExecuteSync.textContent = 'Sincronizar Ahora';
+      btnExecuteSync.textContent = 'Sincronizar';
     }
   });
-
-  function mergeCatalogs(existing, incoming) {
-    const map = new Map();
-    for (const t of existing) map.set(t.command.toUpperCase(), t);
-    for (const inc of incoming) {
-      const key = inc.command.toUpperCase();
-      if (map.has(key)) {
-        const prev = map.get(key);
-        map.set(key, { ...prev, ...inc, id: prev.id });
-      } else {
-        map.set(key, inc);
-      }
-    }
-    return Array.from(map.values());
-  }
 
   function parseGoogleSheetCsv(csvText) {
     const rows = [];
@@ -1001,11 +1298,11 @@
     el.className = 'spa-toast';
     el.textContent = message;
     toastHost.appendChild(el);
-    setTimeout(() => el.remove(), 2600);
+    setTimeout(() => el.remove(), 2400);
   }
 
   // ---------------------------------------------------------------------------
-  // Inicialización de la Web App (SPA)
+  // Inicialización de la Suite Clínica (SPA)
   // ---------------------------------------------------------------------------
   (async function initSpa() {
     templates = await loadCatalog();

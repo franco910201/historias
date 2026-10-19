@@ -6,62 +6,62 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Historias Clínicas" />
-  <meta name="theme-color" content="#001aff" />
-  <meta name="description" content="Aplicación web interactiva de plantillas de historia clínica (.MC, .EF, .EVO, .ORD) con píldoras verdes navegables por Tab, optimizada para iPad y computadores." />
-  <title>Historias Clínicas · Plantillas Interactivas para Médicos e Internos</title>
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="description" content="Dashboard clínico interactivo de plantillas médicas (.PED, .MC, .EF, .EVO, .ORD) con formato rico y píldoras verdes navegables por Tab." />
+  <title>Historias Clínicas · Suite Médica Interactiva</title>
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
   <div class="spa-shell">
-    <!-- Barra superior con Modo Claro/Oscuro y Navegación SPA -->
+    <!-- Barra superior estilo Dashboard Clínico Profesional -->
     <header class="app-header">
       <div class="brand-group">
         <div class="brand-logo" aria-hidden="true">🩺</div>
-        <div>
+        <div class="brand-text">
           <div class="brand-title-row">
             <h1 class="brand-title">Historias Clínicas</h1>
-            <span class="pro-pill">Médicos &amp; Internos</span>
+            <span class="pro-pill">Suite Clínica</span>
           </div>
-          <p class="brand-subtitle">Píldoras verdes navegables con <kbd>Tab</kbd> · Optimizado para iPad y Escritorio</p>
+          <p class="brand-subtitle">Navegación rápida con <kbd>Tab</kbd> · Jerarquía clínica con formato rico</p>
         </div>
       </div>
 
       <div class="header-controls">
-        <!-- Conmutador de vistas de la SPA -->
-        <nav class="view-switcher" role="tablist" aria-label="Modo de aplicación">
+        <!-- Selector compacto de vistas -->
+        <nav class="view-switcher" role="tablist" aria-label="Secciones de la aplicación">
           <button type="button" id="tabExpander" class="seg-btn active" role="tab" aria-selected="true">
-            ⚡ Plantillas
+            Plantillas
           </button>
           <button type="button" id="tabNotePad" class="seg-btn" role="tab" aria-selected="false">
-            📄 Hoja Clínica <span id="noteBadge" class="badge-count" hidden>0</span>
+            Hoja Acumulada <span id="noteBadge" class="badge-count" hidden>0</span>
           </button>
           <button type="button" id="tabBuilder" class="seg-btn" role="tab" aria-selected="false">
-            ⚙️ Gestionar Catálogo
+            Catálogo
           </button>
         </nav>
 
-        <!-- Botón de Modo Claro / Oscuro -->
+        <!-- Conmutador sutil Modo Claro / Oscuro -->
         <button
           type="button"
           id="btnThemeToggle"
-          class="theme-toggle-btn"
+          class="btn-pill-subtle"
           aria-label="Cambiar entre modo claro y oscuro"
-          title="Cambiar tema Claro / Oscuro"
+          title="Alternar tema Claro / Oscuro"
         >
           <span id="themeIcon" aria-hidden="true">🌙</span>
-          <span id="themeLabel" class="theme-label-text">Oscuro</span>
+          <span id="themeLabel">Oscuro</span>
         </button>
       </div>
     </header>
 
     <!-- =================================================================== -->
-    <!-- VISTA 1: TARJETAS DE PLANTILLAS Y PÍLDORAS VERDES NAVEGABLES CON TAB -->
+    <!-- VISTA 1: EXPANSOR DE PLANTILLAS CON JERARQUÍA RICA Y PÍLDORAS VERDES-->
     <!-- =================================================================== -->
     <main id="viewExpander" class="spa-view active" role="tabpanel">
       <div class="expander-layout">
-        <!-- Selector de plantillas por tarjetas/píldoras táctiles + buscador rápido -->
-        <section class="selector-bar" aria-label="Catálogo de plantillas clínicas">
+        <!-- Barra superior de selección de plantilla compacta y elegante -->
+        <section class="selector-bar" aria-label="Selector de formatos clínicos">
           <div class="selector-top-row">
             <div class="select-wrapper">
               <label for="templateSelect" class="sr-only">Seleccionar formato de historia clínica</label>
@@ -72,66 +72,72 @@
               <input
                 type="search"
                 id="quickCommandInput"
-                placeholder="Atajo rápido: escribe .MC, .EF, .EVO, .ORD..."
+                placeholder="Atajo: .PED, .MC, .EF, .EVO, .ORD..."
                 autocomplete="off"
                 autocapitalize="characters"
                 spellcheck="false"
               />
             </div>
 
-            <button type="button" id="btnResetFields" class="btn-outline-touch" title="Vaciar todos los campos rellenados">
-              🧹 Limpiar campos
+            <button type="button" id="btnResetFields" class="btn-pill-subtle" title="Vaciar los campos rellenados">
+              Limpiar campos
             </button>
           </div>
 
-          <!-- Tarjetas/Botones táctiles para selección a un toque en iPad -->
-          <div id="templateTouchBar" class="template-touch-bar" role="listbox" aria-label="Acceso rápido a plantillas"></div>
+          <!-- Pastillas de acceso directo al catálogo (.PED, .MC, .EF, .EVO, .ORD) -->
+          <div id="templateTouchBar" class="template-touch-bar" role="listbox" aria-label="Formatos disponibles"></div>
         </section>
 
-        <!-- Tarjeta clínica principal con las Píldoras Verdes -->
-        <section class="clinical-card" aria-label="Plantilla interactiva con píldoras verdes">
+        <!-- Tarjeta principal de la nota clínica -->
+        <section class="clinical-card" aria-label="Editor interactivo de historia clínica">
           <div class="clinical-card-header">
             <div class="active-template-info">
-              <span id="activeCmdBadge" class="cmd-pill-badge">.MC</span>
-              <h2 id="activeTemplateTitle">Motivo de consulta</h2>
-              <span id="activeCategoryBadge" class="category-pill">Ingreso</span>
+              <span id="activeCmdBadge" class="cmd-pill-badge">.PED</span>
+              <h2 id="activeTemplateTitle">Historia clínica pediátrica</h2>
+              <span id="activeCategoryBadge" class="category-pill">Pediatría</span>
             </div>
 
-            <!-- Navegación táctil entre píldoras verdes para iPad -->
-            <div class="pill-nav-controls" aria-label="Navegar entre píldoras verdes">
-              <span id="pillProgressText" class="pill-progress">Campo 1 de 1</span>
-              <button type="button" id="btnPrevPill" class="nav-pill-btn" title="Píldora anterior (Shift+Tab)">
-                ◀ Anterior
+            <!-- Controles compactos de navegación entre píldoras verdes -->
+            <div class="pill-nav-controls" aria-label="Navegación entre campos">
+              <span id="pillProgressText" class="pill-progress">1 / 1</span>
+              <button type="button" id="btnPrevPill" class="nav-pill-btn" title="Campo anterior (Shift+Tab)">
+                ‹ Ant
               </button>
-              <button type="button" id="btnNextPill" class="nav-pill-btn" title="Siguiente píldora (Tab)">
-                Siguiente ▶
+              <button type="button" id="btnNextPill" class="nav-pill-btn" title="Siguiente campo (Tab)">
+                Sig ›
               </button>
             </div>
           </div>
 
-          <!-- Lienzo interactivo con el texto y las Píldoras Verdes (.pill) -->
+          <!-- Lienzo clínico con renderizado rico (encabezados, negritas, viñetas y píldoras verdes) -->
           <div id="pillCanvas" class="pill-canvas" tabindex="-1"></div>
 
-          <!-- Vista previa en vivo del texto plano listo para historia clínica -->
+          <!-- Vista previa colapsable -->
           <details class="live-output-preview">
-            <summary>👁️ Ver texto plano ensamblado en tiempo real</summary>
-            <pre id="assembledPreviewText" class="assembled-preview-box"></pre>
+            <summary>Vista previa del documento ensamblado</summary>
+            <div id="assembledPreviewRich" class="assembled-preview-box"></div>
           </details>
 
-          <!-- Barra inferior con botones grandes optimizados para pantallas táctiles de iPad -->
-          <footer class="touch-action-bar">
-            <div class="keyboard-hints">
-              <span><kbd>Tab</kbd> Siguiente píldora</span>
-              <span><kbd>Shift+Tab</kbd> Anterior</span>
-              <span><kbd>Enter</kbd> Copiar al instante</span>
+          <!-- Pie de tarjeta con UN ÚNICO botón principal de copiado limpio y compacto -->
+          <footer class="card-footer-bar">
+            <div class="footer-meta">
+              <span class="kbd-hint"><kbd>Tab</kbd> saltar campo · <kbd>Enter</kbd> copiar</span>
+              <label class="copy-mode-label" title="Elige cómo se copia el texto al portapapeles">
+                <span>Formato:</span>
+                <select id="copyFormatSelect" class="copy-format-select">
+                  <option value="rich">Texto rico (Negritas y títulos)</option>
+                  <option value="plain">Texto limpio estructurado</option>
+                  <option value="markdown">Markdown (** y ####)</option>
+                </select>
+              </label>
             </div>
 
-            <div class="primary-touch-buttons">
-              <button type="button" id="btnInsertToSheet" class="btn-touch btn-touch-secondary">
-                ➕ Enviar a Hoja Clínica
+            <div class="footer-actions">
+              <button type="button" id="btnInsertToSheet" class="btn-action btn-action-secondary" title="Agregar al final de la Hoja Acumulada">
+                + Enviar a Hoja
               </button>
-              <button type="button" id="btnCopyMain" class="btn-touch btn-touch-primary">
-                📋 Copiar al Portapapeles
+              <button type="button" id="btnCopyMain" class="btn-action btn-action-primary">
+                Copiar al portapapeles
               </button>
             </div>
           </footer>
@@ -140,57 +146,57 @@
     </main>
 
     <!-- =================================================================== -->
-    <!-- VISTA 2: HOJA CLÍNICA ACUMULADA (COMBINA .MC + .EF + .EVO + .ORD)   -->
+    <!-- VISTA 2: HOJA CLÍNICA ACUMULADA                                     -->
     <!-- =================================================================== -->
     <main id="viewNotePad" class="spa-view" role="tabpanel" hidden>
       <div class="notepad-layout">
         <div class="notepad-card">
           <div class="notepad-header">
             <div>
-              <h2>📄 Hoja Clínica Completa</h2>
-              <p>Acumula múltiples formatos (ej. <code>.MC</code> + <code>.EF</code> + <code>.ORD</code>) o escribe cualquier comando aquí para abrir sus píldoras verdes.</p>
+              <h2>Hoja Clínica Acumulada</h2>
+              <p>Combina varias secciones o escribe un atajo (<code>.PED</code>, <code>.MC</code>, <code>.EF</code>, <code>.EVO</code>, <code>.ORD</code>) para abrir sus campos.</p>
             </div>
             <div class="notepad-actions">
-              <button type="button" id="btnClearSheet" class="btn-outline-touch">
-                🗑️ Vaciar hoja
+              <button type="button" id="btnClearSheet" class="btn-pill-subtle">
+                Vaciar hoja
               </button>
-              <button type="button" id="btnCopySheet" class="btn-touch btn-touch-primary">
-                📋 Copiar Historia Completa
+              <button type="button" id="btnCopySheet" class="btn-action btn-action-primary">
+                Copiar al portapapeles
               </button>
             </div>
           </div>
           <textarea
             id="clinicalSheetTextarea"
             class="clinical-sheet-textarea"
-            placeholder="Aquí se irán agregando las plantillas que envíes con '➕ Enviar a Hoja Clínica'. También puedes redactar libremente o escribir .MC, .EF, .EVO, .ORD para expandirlos..."
+            placeholder="Las plantillas que envíes con '+ Enviar a Hoja' se acumularán aquí..."
           ></textarea>
         </div>
       </div>
     </main>
 
     <!-- =================================================================== -->
-    <!-- VISTA 3: GESTOR COLABORATIVO Y CREADOR VISUAL DE PLANTILLAS         -->
+    <!-- VISTA 3: GESTOR COLABORATIVO Y CREADOR DE PLANTILLAS                -->
     <!-- =================================================================== -->
     <main id="viewBuilder" class="spa-view" role="tabpanel" hidden>
       <div class="builder-toolbar">
         <div class="builder-toolbar-left">
-          <button type="button" id="btnNewTemplate" class="btn-touch btn-touch-primary btn-sm-touch">
-            ＋ Crear Nueva Plantilla
+          <button type="button" id="btnNewTemplate" class="btn-action btn-action-primary">
+            + Nueva plantilla
           </button>
         </div>
         <div class="builder-toolbar-right">
-          <button type="button" id="btnOpenSyncModal" class="btn-outline-touch">
-            🌐 Sincronizar Google Sheet / URL
+          <button type="button" id="btnOpenSyncModal" class="btn-pill-subtle">
+            Sincronizar URL / Sheet
           </button>
-          <button type="button" id="btnImportJson" class="btn-outline-touch">
-            📥 Importar JSON
+          <button type="button" id="btnImportJson" class="btn-pill-subtle">
+            Importar JSON
           </button>
           <input type="file" id="fileImportInput" accept=".json,application/json" hidden />
-          <button type="button" id="btnExportJson" class="btn-outline-touch">
-            📤 Exportar JSON
+          <button type="button" id="btnExportJson" class="btn-pill-subtle">
+            Exportar JSON
           </button>
-          <button type="button" id="btnRestoreDefaults" class="btn-outline-touch">
-            ↺ Restaurar Catálogo (.MC, .EF, .EVO, .ORD)
+          <button type="button" id="btnRestoreDefaults" class="btn-pill-subtle">
+            Restaurar catálogo base
           </button>
         </div>
       </div>
@@ -198,68 +204,70 @@
       <div class="builder-grid">
         <!-- Lista lateral de plantillas -->
         <aside class="builder-sidebar">
-          <input type="search" id="builderSearch" class="builder-search" placeholder="Filtrar por comando o nombre..." />
+          <input type="search" id="builderSearch" class="builder-search" placeholder="Filtrar por atajo o nombre..." />
           <div id="builderTemplateList" class="builder-list"></div>
         </aside>
 
-        <!-- Formulario visual sin código -->
+        <!-- Editor visual de plantillas -->
         <section class="builder-editor-card">
           <form id="builderForm" autocomplete="off">
             <div class="builder-form-header">
-              <h2 id="builderFormTitle">Editar Plantilla</h2>
+              <h2 id="builderFormTitle">Editar plantilla</h2>
               <div class="builder-form-actions">
-                <button type="button" id="btnDuplicateTpl" class="btn-outline-touch">Duplicar</button>
-                <button type="button" id="btnDeleteTpl" class="btn-danger-touch">Eliminar</button>
-                <button type="submit" class="btn-touch btn-touch-primary btn-sm-touch">💾 Guardar y Usar</button>
+                <button type="button" id="btnDuplicateTpl" class="btn-pill-subtle">Duplicar</button>
+                <button type="button" id="btnDeleteTpl" class="btn-pill-danger">Eliminar</button>
+                <button type="submit" class="btn-action btn-action-primary">Guardar cambios</button>
               </div>
             </div>
 
             <div class="builder-fields-row">
               <div class="field-col">
-                <label for="tplCommand">Comando disparador *</label>
-                <input type="text" id="tplCommand" required placeholder=".MC" maxlength="20" />
+                <label for="tplCommand">Atajo *</label>
+                <input type="text" id="tplCommand" required placeholder=".PED" maxlength="20" />
               </div>
               <div class="field-col field-col-wide">
-                <label for="tplLabel">Nombre de la Plantilla *</label>
-                <input type="text" id="tplLabel" required placeholder="Ej: Motivo de consulta" maxlength="80" />
+                <label for="tplLabel">Nombre del formato *</label>
+                <input type="text" id="tplLabel" required placeholder="Ej: Historia clínica pediátrica" maxlength="80" />
               </div>
               <div class="field-col">
                 <label for="tplCategory">Servicio / Categoría</label>
-                <input type="text" id="tplCategory" placeholder="Ej: Ingreso, Urgencias" maxlength="40" />
+                <input type="text" id="tplCategory" placeholder="Ej: Pediatría, Urgencias" maxlength="40" />
               </div>
             </div>
 
-            <!-- Insertador de Píldoras Verdes con un toque -->
+            <!-- Constructor visual de Píldoras Verdes y Formato Rico -->
             <div class="pill-inserter-box">
               <div class="pill-inserter-top">
-                <span>💊 <strong>Insertar píldora verde</strong> donde está el cursor:</span>
+                <div class="format-helpers">
+                  <span class="inserter-label">Formato y campos:</span>
+                  <button type="button" id="btnFmtHeading" class="btn-fmt" title="Insertar título de sección">#### Título</button>
+                  <button type="button" id="btnFmtBold" class="btn-fmt" title="Insertar subtítulo en negrita">**Negrita:**</button>
+                  <button type="button" id="btnFmtBullet" class="btn-fmt" title="Insertar viñeta">• Lista</button>
+                </div>
                 <div class="custom-pill-row">
-                  <input type="text" id="customPillInput" placeholder="Nombre del campo (ej. Alergias)" maxlength="50" />
-                  <button type="button" id="btnAddCustomPill" class="btn-add-pill">＋ Insertar {{Campo}}</button>
+                  <input type="text" id="customPillInput" placeholder="Nuevo campo (ej. Alergias)" maxlength="50" />
+                  <button type="button" id="btnAddCustomPill" class="btn-add-pill">+ Insertar {{Campo}}</button>
                 </div>
               </div>
               <div id="quickChipContainer" class="quick-chips">
                 <button type="button" class="pill-chip" data-var="Nombre">+ Nombre</button>
-                <button type="button" class="pill-chip" data-var="Documento">+ Documento</button>
                 <button type="button" class="pill-chip" data-var="Edad">+ Edad</button>
-                <button type="button" class="pill-chip" data-var="Diagnóstico">+ Diagnóstico</button>
-                <button type="button" class="pill-chip" data-var="TA">+ TA</button>
-                <button type="button" class="pill-chip" data-var="FC">+ FC</button>
-                <button type="button" class="pill-chip" data-var="FR">+ FR</button>
-                <button type="button" class="pill-chip" data-var="Temperatura">+ Temperatura</button>
-                <button type="button" class="pill-chip" data-var="SatO2">+ SatO2</button>
+                <button type="button" class="pill-chip" data-var="Motivo de consulta">+ Motivo</button>
+                <button type="button" class="pill-chip" data-var="Enfermedad actual">+ Enf. actual</button>
+                <button type="button" class="pill-chip" data-var="Temperatura">+ Temp</button>
+                <button type="button" class="pill-chip" data-var="Frecuencia cardiaca">+ FC</button>
+                <button type="button" class="pill-chip" data-var="Frecuencia respiratoria">+ FR</button>
+                <button type="button" class="pill-chip" data-var="Saturacion">+ SatO2</button>
+                <button type="button" class="pill-chip" data-var="Presion arterial">+ TA</button>
                 <button type="button" class="pill-chip" data-var="Peso">+ Peso</button>
                 <button type="button" class="pill-chip" data-var="Talla">+ Talla</button>
-                <button type="button" class="pill-chip" data-var="Subjetivo">+ Subjetivo</button>
-                <button type="button" class="pill-chip" data-var="Hallazgos">+ Hallazgos</button>
-                <button type="button" class="pill-chip" data-var="Análisis">+ Análisis</button>
-                <button type="button" class="pill-chip" data-var="Plan">+ Plan</button>
+                <button type="button" class="pill-chip" data-var="Analisis y plan">+ Análisis y plan</button>
               </div>
             </div>
 
             <div class="field-col">
-              <label for="tplBody">Contenido de la plantilla (usa <code>{{Campo}}</code> para cada píldora verde navegable con Tab) *</label>
-              <textarea id="tplBody" rows="11" required placeholder="Escribe aquí el formato clínico..."></textarea>
+              <label for="tplBody">Estructura de la plantilla (soporta <code>#### Encabezados</code>, <code>**Negritas**</code> y campos <code>{{Variable}}</code>) *</label>
+              <textarea id="tplBody" rows="13" required placeholder="Escribe aquí el formato clínico..."></textarea>
             </div>
           </form>
         </section>
@@ -267,41 +275,16 @@
     </main>
   </div>
 
-  <!-- ===================================================================== -->
-  <!-- DOCK FLOTANTE PARA IPAD / MÓVIL / ESCRITORIO (COPIAR Y NUEVA PLANTILLA)-->
-  <!-- ===================================================================== -->
-  <div class="floating-dock" aria-label="Acciones rápidas flotantes">
-    <button
-      type="button"
-      id="fabNewTemplate"
-      class="fab-btn fab-secondary"
-      title="Crear una nueva plantilla clínica sin tocar código"
-    >
-      <span class="fab-icon" aria-hidden="true">＋</span>
-      <span class="fab-label">Nueva Plantilla</span>
-    </button>
-
-    <button
-      type="button"
-      id="fabQuickCopy"
-      class="fab-btn fab-primary"
-      title="Copiar plantilla actual al portapapeles con un solo toque"
-    >
-      <span class="fab-icon" aria-hidden="true">📋</span>
-      <span class="fab-label">Copiar con 1 Toque</span>
-    </button>
-  </div>
-
   <!-- Modal para sincronizar con Google Sheets CSV o JSON compartido -->
   <div id="remoteSyncModal" class="modal-overlay" hidden>
     <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="syncDialogTitle">
       <div class="modal-header">
-        <h3 id="syncDialogTitle">🌐 Sincronizar con Google Sheet o URL JSON</h3>
+        <h3 id="syncDialogTitle">Sincronizar con Google Sheet o URL JSON</h3>
         <button type="button" id="btnCloseSync" class="icon-close-btn" aria-label="Cerrar">✕</button>
       </div>
       <div class="modal-body">
-        <p>Comparte plantillas entre médicos e internos conectando una <strong>Google Sheet publicada en la web (CSV)</strong> o un enlace <strong>JSON</strong>.</p>
-        <label for="remoteUrlInput" class="modal-label">URL pública (CSV de Google Sheets o JSON):</label>
+        <p>Conecta una <strong>Google Sheet publicada como CSV</strong> o un archivo <strong>JSON</strong> para actualizar las plantillas del equipo.</p>
+        <label for="remoteUrlInput" class="modal-label">URL pública (CSV o JSON):</label>
         <input
           type="url"
           id="remoteUrlInput"
@@ -309,16 +292,16 @@
           placeholder="https://docs.google.com/spreadsheets/d/.../pub?output=csv"
         />
         <p class="modal-hint">
-          En Google Sheets: <em>Archivo → Compartir → Publicar en la web → Valores separados por comas (.csv)</em> con las columnas: <code>command, label, category, body</code>.
+          Columnas esperadas en CSV: <code>command, label, category, body</code>.
         </p>
         <label class="modal-checkbox">
           <input type="checkbox" id="mergeRemoteCheck" checked />
-          <span>Combinar con mis plantillas actuales (sin borrar las creadas en este dispositivo)</span>
+          <span>Combinar con mis plantillas locales</span>
         </label>
       </div>
       <div class="modal-footer">
-        <button type="button" id="btnCancelSyncModal" class="btn-outline-touch">Cancelar</button>
-        <button type="button" id="btnExecuteSync" class="btn-touch btn-touch-primary btn-sm-touch">Sincronizar Ahora</button>
+        <button type="button" id="btnCancelSyncModal" class="btn-pill-subtle">Cancelar</button>
+        <button type="button" id="btnExecuteSync" class="btn-action btn-action-primary">Sincronizar</button>
       </div>
     </div>
   </div>
@@ -326,7 +309,7 @@
   <!-- Medidor invisible para autoajustar el ancho exacto de cada píldora verde -->
   <span id="pillMeasureSpan" class="pill measure" aria-hidden="true"></span>
 
-  <!-- Contenedor de notificaciones flotantes -->
+  <!-- Contenedor de notificaciones sutiles -->
   <div id="toastHost" class="toast-host" aria-live="polite"></div>
 
   <script src="./app.js"></script>

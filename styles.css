@@ -1,55 +1,59 @@
 :root,
 [data-theme="light"] {
-  --bg-page: #f1f5f9;
+  --bg-page: #f4f6f9;
   --bg-card: #ffffff;
   --bg-subtle: #f8fafc;
   --bg-input: #ffffff;
   --text-main: #0f172a;
   --text-secondary: #475569;
   --text-muted: #64748b;
+  --heading-color: #0f172a;
+  --heading-accent: #cbd5e1;
   --border-light: #e2e8f0;
   --border-strong: #cbd5e1;
-  --primary: #001aff;
-  --primary-hover: #0014cc;
-  --primary-soft: #eef2ff;
-  --pill-text: #188038;
+  --primary: #0f172a;
+  --primary-hover: #1e293b;
+  --accent-blue: #2563eb;
+  --accent-blue-soft: #eff6ff;
+  --pill-text: #15803d;
   --pill-bg: #e8f8ee;
   --pill-focus-bg: #ffffff;
   --pill-border: #34a853;
-  --pill-focus-ring: rgba(52, 168, 83, 0.34);
+  --pill-focus-ring: rgba(52, 168, 83, 0.28);
   --danger: #dc2626;
   --danger-bg: #fef2f2;
   --danger-border: #fecaca;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.06);
-  --shadow-fab: 0 12px 32px rgba(15, 23, 42, 0.22);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.05), 0 4px 16px rgba(15, 23, 42, 0.03);
 }
 
 [data-theme="dark"] {
-  --bg-page: #0b1120;
+  --bg-page: #0b0f19;
   --bg-card: #111827;
-  --bg-subtle: #1e293b;
+  --bg-subtle: #161f33;
   --bg-input: #0f172a;
-  --text-main: #f8fafc;
+  --text-main: #f1f5f9;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
+  --heading-color: #f8fafc;
+  --heading-accent: #1e293b;
   --border-light: #1e293b;
   --border-strong: #334155;
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
-  --primary-soft: rgba(59, 130, 246, 0.16);
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --accent-blue: #3b82f6;
+  --accent-blue-soft: rgba(59, 130, 246, 0.14);
   --pill-text: #4ade80;
-  --pill-bg: rgba(22, 163, 74, 0.22);
+  --pill-bg: rgba(22, 163, 74, 0.2);
   --pill-focus-bg: #052e16;
   --pill-border: #22c55e;
-  --pill-focus-ring: rgba(34, 197, 94, 0.38);
+  --pill-focus-ring: rgba(34, 197, 94, 0.35);
   --danger: #f87171;
-  --danger-bg: rgba(220, 38, 38, 0.15);
-  --danger-border: rgba(248, 113, 113, 0.35);
-  --shadow-card: 0 12px 34px rgba(0, 0, 0, 0.45);
-  --shadow-fab: 0 14px 36px rgba(0, 0, 0, 0.6);
+  --danger-bg: rgba(220, 38, 38, 0.14);
+  --danger-border: rgba(248, 113, 113, 0.32);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 * {
@@ -63,10 +67,11 @@ html, body {
   min-height: 100%;
   background: var(--bg-page);
   color: var(--text-main);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 15px;
   line-height: 1.5;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.18s ease, color 0.18s ease;
 }
 
 .sr-only {
@@ -84,21 +89,23 @@ html, body {
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
-  max-width: 1280px;
+  max-width: 1180px;
   margin: 0 auto;
-  padding: 14px 18px calc(96px + env(safe-area-inset-bottom, 0px));
-  gap: 14px;
+  padding: 12px 16px calc(20px + env(safe-area-inset-bottom, 0px));
+  gap: 12px;
 }
 
-/* Cabecera y Selector de Modo */
+/* ========================================================================= */
+/* CABECERA COMPACTA ESTILO DASHBOARD MÉDICO                                 */
+/* ========================================================================= */
 .app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
   background: var(--bg-card);
-  padding: 12px 18px;
+  padding: 10px 16px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-light);
   box-shadow: var(--shadow-card);
@@ -107,19 +114,19 @@ html, body {
 .brand-group {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .brand-logo {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
   background: var(--pill-bg);
-  border: 1.5px solid var(--pill-border);
+  border: 1px solid var(--pill-border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 17px;
 }
 
 .brand-title-row {
@@ -130,17 +137,16 @@ html, body {
 
 .brand-title {
   margin: 0;
-  font-size: 19px;
+  font-size: 16px;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
 }
 
 .pro-pill {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 2px 8px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 1px 7px;
   border-radius: 999px;
   color: var(--pill-text);
   background: var(--pill-bg);
@@ -148,36 +154,36 @@ html, body {
 }
 
 .brand-subtitle {
-  margin: 2px 0 0;
-  font-size: 13px;
+  margin: 1px 0 0;
+  font-size: 12px;
   color: var(--text-secondary);
 }
 
 kbd {
   display: inline-block;
-  padding: 1px 6px;
-  font-size: 11.5px;
+  padding: 1px 5px;
+  font-size: 11px;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   background: var(--bg-subtle);
   border: 1px solid var(--border-strong);
-  border-radius: 5px;
+  border-radius: 4px;
   color: var(--text-main);
 }
 
 .header-controls {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .view-switcher {
   display: inline-flex;
   background: var(--bg-page);
-  padding: 4px;
-  border-radius: 12px;
+  padding: 3px;
+  border-radius: 999px;
   border: 1px solid var(--border-light);
-  gap: 4px;
+  gap: 2px;
 }
 
 .seg-btn {
@@ -185,51 +191,117 @@ kbd {
   background: transparent;
   color: var(--text-secondary);
   font: inherit;
-  font-size: 14px;
+  font-size: 12.5px;
   font-weight: 600;
-  padding: 9px 14px;
-  border-radius: 9px;
+  padding: 5px 12px;
+  border-radius: 999px;
   cursor: pointer;
   touch-action: manipulation;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  gap: 5px;
+  transition: all 0.14s ease;
+}
+
+.seg-btn:hover {
+  color: var(--text-main);
 }
 
 .seg-btn.active {
   background: var(--bg-card);
-  color: var(--primary);
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+  color: var(--text-main);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.1);
 }
 
 .badge-count {
-  background: var(--primary);
+  background: var(--accent-blue);
   color: #fff;
-  font-size: 11.5px;
-  padding: 1px 7px;
+  font-size: 10.5px;
+  padding: 0 6px;
   border-radius: 999px;
 }
 
-.theme-toggle-btn {
-  min-height: 40px;
-  padding: 7px 13px;
-  border-radius: 10px;
-  border: 1.5px solid var(--border-strong);
-  background: var(--bg-subtle);
-  color: var(--text-main);
+/* ========================================================================= */
+/* BOTONES COMPACTOS Y SUTILES (ESTILO PASTILLA REFINADA)                    */
+/* ========================================================================= */
+.btn-pill-subtle {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-card);
+  color: var(--text-secondary);
   font: inherit;
-  font-size: 13.5px;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  touch-action: manipulation;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.14s ease;
+}
+
+.btn-pill-subtle:hover {
+  color: var(--text-main);
+  border-color: var(--text-muted);
+  background: var(--bg-subtle);
+}
+
+.btn-pill-danger {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--danger-border);
+  background: var(--danger-bg);
+  color: var(--danger);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  touch-action: manipulation;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-action {
+  height: 34px;
+  padding: 0 15px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   touch-action: manipulation;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
+  transition: all 0.14s ease;
 }
 
-.theme-toggle-btn:hover {
-  border-color: var(--primary);
+.btn-action:active {
+  transform: scale(0.98);
+}
+
+.btn-action-primary {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.btn-action-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-action-secondary {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border-color: var(--border-strong);
+}
+
+.btn-action-secondary:hover {
+  background: var(--bg-subtle);
 }
 
 /* Vistas SPA */
@@ -244,82 +316,82 @@ kbd {
 }
 
 /* ========================================================================= */
-/* VISTA 1: EXPANSOR DE PLANTILLAS                                           */
+/* VISTA 1: SELECTOR Y TARJETA DE HISTORIA CLÍNICA                           */
 /* ========================================================================= */
 .expander-layout {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
 .selector-bar {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
-  padding: 14px 16px;
+  padding: 10px 14px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   box-shadow: var(--shadow-card);
 }
 
 .selector-top-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .select-wrapper {
-  flex: 1 1 260px;
+  flex: 1 1 240px;
 }
 
 .select-wrapper select {
   width: 100%;
-  min-height: 46px;
-  padding: 10px 14px;
+  height: 36px;
+  padding: 0 12px;
   font: inherit;
-  font-size: 16px; /* Evita auto-zoom en Safari iPadOS/iOS */
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-main);
   background: var(--bg-subtle);
-  border: 1.5px solid var(--border-strong);
-  border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
   cursor: pointer;
 }
 
 .select-wrapper select:focus {
-  outline: 2px solid var(--primary);
+  outline: 2px solid var(--accent-blue);
   outline-offset: 1px;
 }
 
 .quick-command-box {
-  flex: 0 1 290px;
+  flex: 0 1 250px;
 }
 
 .quick-command-box input {
   width: 100%;
-  min-height: 46px;
-  padding: 10px 14px;
+  height: 36px;
+  padding: 0 12px;
   font: inherit;
-  font-size: 16px;
+  font-size: 13.5px;
   color: var(--text-main);
-  border: 1.5px solid var(--border-strong);
-  border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
   background: var(--bg-input);
 }
 
 .quick-command-box input:focus {
-  outline: 2px solid var(--primary);
+  outline: 2px solid var(--accent-blue);
   outline-offset: 1px;
 }
 
-/* Barra táctil de tarjetas/chips de plantillas (ideal para iPad) */
+/* Pastillas compactas de acceso rápido a plantillas */
 .template-touch-bar {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   overflow-x: auto;
   padding-bottom: 2px;
   scrollbar-width: thin;
@@ -329,47 +401,41 @@ kbd {
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 8px 14px;
+  gap: 6px;
+  height: 30px;
+  padding: 0 11px;
   border-radius: 999px;
-  border: 1.5px solid var(--border-strong);
+  border: 1px solid var(--border-light);
   background: var(--bg-subtle);
-  color: var(--text-main);
+  color: var(--text-secondary);
   font: inherit;
-  font-size: 14.5px;
-  font-weight: 600;
+  font-size: 12.5px;
+  font-weight: 500;
   cursor: pointer;
   touch-action: manipulation;
-  transition: all 0.14s ease;
+  transition: all 0.12s ease;
 }
 
 .tpl-touch-chip:hover {
-  border-color: var(--primary);
-  background: var(--primary-soft);
+  border-color: var(--border-strong);
+  color: var(--text-main);
 }
 
 .tpl-touch-chip.active {
-  background: var(--primary);
-  color: #fff;
-  border-color: var(--primary);
-  box-shadow: 0 4px 12px rgba(0, 26, 255, 0.25);
+  background: var(--accent-blue-soft);
+  color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  font-weight: 600;
 }
 
 .tpl-touch-chip .chip-cmd {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 13px;
-  padding: 2px 7px;
-  border-radius: 999px;
-  background: rgba(15, 23, 42, 0.12);
+  font-size: 11.5px;
+  font-weight: 700;
+  opacity: 0.85;
 }
 
-.tpl-touch-chip.active .chip-cmd {
-  background: rgba(255, 255, 255, 0.22);
-  color: #fff;
-}
-
-/* Tarjeta principal con Píldoras Verdes */
+/* Tarjeta Clínica Principal */
 .clinical-card {
   flex: 1;
   display: flex;
@@ -386,8 +452,8 @@ kbd {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 12px;
-  padding: 14px 20px;
+  gap: 10px;
+  padding: 10px 18px;
   background: var(--bg-subtle);
   border-bottom: 1px solid var(--border-light);
 }
@@ -395,99 +461,159 @@ kbd {
 .active-template-info {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .cmd-pill-badge {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
-  padding: 4px 10px;
+  padding: 2px 8px;
   border-radius: 999px;
-  background: var(--primary);
-  color: #fff;
+  background: var(--accent-blue-soft);
+  color: var(--accent-blue);
+  border: 1px solid rgba(37, 99, 235, 0.25);
 }
 
 .active-template-info h2 {
   margin: 0;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 700;
 }
 
 .category-pill {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  padding: 3px 9px;
+  padding: 1px 8px;
   border-radius: 999px;
   background: var(--border-light);
   color: var(--text-secondary);
 }
 
-/* Controles táctiles Anterior / Siguiente píldora */
+/* Controles compactos Anterior / Siguiente campo */
 .pill-nav-controls {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
 }
 
 .pill-progress {
-  font-size: 13px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--pill-text);
   background: var(--pill-bg);
   border: 1px solid var(--pill-border);
-  padding: 4px 10px;
+  padding: 2px 8px;
   border-radius: 999px;
+  margin-right: 2px;
 }
 
 .nav-pill-btn {
-  min-height: 38px;
-  padding: 6px 12px;
+  height: 28px;
+  padding: 0 9px;
   font: inherit;
-  font-size: 13.5px;
+  font-size: 12px;
   font-weight: 600;
-  color: var(--text-main);
+  color: var(--text-secondary);
   background: var(--bg-card);
   border: 1px solid var(--border-strong);
-  border-radius: var(--radius-sm);
+  border-radius: 999px;
   cursor: pointer;
   touch-action: manipulation;
 }
 
-.nav-pill-btn:active {
+.nav-pill-btn:hover {
+  color: var(--text-main);
   background: var(--bg-page);
 }
 
-/* Lienzo del texto clínico y Píldoras Verdes */
+/* ========================================================================= */
+/* LIENZO CLÍNICO CON FORMATO RICO (TÍTULOS, NEGRITAS Y PÍLDORAS VERDES)     */
+/* ========================================================================= */
 .pill-canvas {
   flex: 1;
-  padding: 22px 24px;
-  font-size: 16.5px;
-  line-height: 2.35;
-  white-space: pre-wrap;
+  padding: 20px 24px;
+  font-size: 15px;
+  line-height: 1.85;
   overflow-wrap: break-word;
   overflow-y: auto;
-  min-height: 260px;
+  min-height: 300px;
 }
 
-/* PÍLDORAS VERDES: Estética original + Ergonomía táctil iPadOS + Modo Oscuro */
+.hc-line {
+  min-height: 1.5em;
+  margin: 2px 0;
+}
+
+.hc-empty-line {
+  height: 10px;
+}
+
+.hc-heading {
+  margin: 16px 0 6px;
+  padding-bottom: 4px;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--heading-color);
+  border-bottom: 1px solid var(--border-light);
+  letter-spacing: -0.01em;
+}
+
+.hc-heading:first-child {
+  margin-top: 0;
+}
+
+.hc-bold {
+  font-weight: 700;
+  color: var(--heading-color);
+}
+
+.hc-bullet-line {
+  position: relative;
+  padding-left: 16px;
+  margin: 3px 0;
+}
+
+.hc-bullet-dot {
+  position: absolute;
+  left: 3px;
+  top: 0;
+  color: var(--text-muted);
+  font-weight: 700;
+  user-select: none;
+}
+
+/* PÍLDORAS VERDES: Estética clínica original + Navegación fluida */
 .pill {
   box-sizing: border-box;
   max-width: 100%;
-  margin: 2px 2px;
-  padding: 3px 11px;
-  min-height: 34px;
+  margin: 1px 2px;
+  padding: 1px 9px;
+  height: 28px;
   font: inherit;
-  font-size: 16px; /* 16px evita zoom automático en Safari iOS/iPadOS */
-  line-height: 1.4;
+  font-size: 15px;
+  line-height: 1.3;
   vertical-align: baseline;
   color: var(--pill-text);
   background: var(--pill-bg);
-  border: 1.5px solid var(--pill-border);
+  border: 1px solid var(--pill-border);
   border-radius: 999px;
   outline: none;
   transition: box-shadow 0.12s ease, background 0.12s ease;
+}
+
+/* En dispositivos táctiles (iPad/iOS), 16px evita que Safari haga auto-zoom */
+@media (pointer: coarse) {
+  .pill,
+  .select-wrapper select,
+  .quick-command-box input {
+    font-size: 16px;
+  }
+  .pill {
+    height: 32px;
+    padding: 2px 10px;
+  }
 }
 
 .pill::placeholder {
@@ -497,7 +623,7 @@ kbd {
 
 .pill:focus {
   background: var(--pill-focus-bg);
-  box-shadow: 0 0 0 4px var(--pill-focus-ring);
+  box-shadow: 0 0 0 3px var(--pill-focus-ring);
 }
 
 .measure {
@@ -509,12 +635,12 @@ kbd {
   pointer-events: none;
 }
 
-/* Vista previa desplegable en tiempo real */
+/* Vista previa desplegable con formato rico */
 .live-output-preview {
   border-top: 1px solid var(--border-light);
   background: var(--bg-subtle);
-  padding: 10px 22px;
-  font-size: 13.5px;
+  padding: 8px 20px;
+  font-size: 12.5px;
   color: var(--text-secondary);
 }
 
@@ -525,187 +651,59 @@ kbd {
 }
 
 .assembled-preview-box {
-  margin: 10px 0 4px;
-  padding: 12px 14px;
+  margin: 8px 0 4px;
+  padding: 14px 16px;
   background: var(--bg-card);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
   color: var(--text-main);
-  font-family: inherit;
   font-size: 14px;
-  line-height: 1.6;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
+  line-height: 1.65;
 }
 
-/* Barra inferior grande optimizada para pantallas táctiles (iPad) */
-.touch-action-bar {
+/* Pie de tarjeta compacto con un único botón de copiar */
+.card-footer-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 14px;
-  padding: 16px 22px;
+  gap: 10px;
+  padding: 10px 18px;
   background: var(--bg-subtle);
   border-top: 1px solid var(--border-light);
 }
 
-.keyboard-hints {
+.footer-meta {
   display: flex;
   align-items: center;
   gap: 14px;
   flex-wrap: wrap;
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-secondary);
 }
 
-.primary-touch-buttons {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  flex: 1;
-  justify-content: flex-end;
-}
-
-.btn-touch {
-  min-height: 54px;
-  padding: 12px 24px;
-  font: inherit;
-  font-size: 16.5px;
-  font-weight: 700;
-  border-radius: var(--radius-md);
-  border: 1.5px solid transparent;
-  cursor: pointer;
-  touch-action: manipulation;
+.copy-mode-label {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: transform 0.08s ease, background 0.15s ease, box-shadow 0.15s ease;
+  gap: 6px;
+  font-weight: 500;
 }
 
-.btn-touch:active {
-  transform: scale(0.98);
-}
-
-.btn-touch-primary {
-  background: var(--primary);
-  color: #ffffff;
-  box-shadow: 0 6px 18px rgba(0, 26, 255, 0.25);
-  min-width: 240px;
-}
-
-.btn-touch-primary:hover {
-  background: var(--primary-hover);
-}
-
-.btn-touch-secondary {
-  background: var(--bg-card);
-  color: var(--text-main);
-  border-color: var(--border-strong);
-}
-
-.btn-touch-secondary:hover {
-  background: var(--bg-page);
-}
-
-.btn-sm-touch {
-  min-height: 44px;
-  padding: 8px 18px;
-  font-size: 14.5px;
-  min-width: auto;
-}
-
-.btn-outline-touch {
-  min-height: 44px;
-  padding: 8px 14px;
+.copy-format-select {
+  height: 28px;
+  padding: 0 8px;
   font: inherit;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 12px;
   color: var(--text-main);
   background: var(--bg-card);
-  border: 1.5px solid var(--border-strong);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  touch-action: manipulation;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
 }
 
-.btn-outline-touch:hover {
-  background: var(--bg-subtle);
-}
-
-.btn-danger-touch {
-  min-height: 44px;
-  padding: 8px 14px;
-  font: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--danger);
-  background: var(--danger-bg);
-  border: 1.5px solid var(--danger-border);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  touch-action: manipulation;
-}
-
-/* ========================================================================= */
-/* BOTÓN FLOTANTE DE ACCIÓN RÁPIDA (FAB DOCK PARA IPAD Y ESCRITORIO)         */
-/* ========================================================================= */
-.floating-dock {
-  position: fixed;
-  right: 22px;
-  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-  z-index: 900;
+.footer-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.fab-btn {
-  min-height: 54px;
-  padding: 12px 20px;
-  border-radius: 999px;
-  border: 1.5px solid transparent;
-  font: inherit;
-  font-size: 15.5px;
-  font-weight: 700;
-  cursor: pointer;
-  touch-action: manipulation;
-  display: inline-flex;
-  align-items: center;
   gap: 8px;
-  box-shadow: var(--shadow-fab);
-  transition: transform 0.12s ease, box-shadow 0.15s ease, background 0.15s ease;
-}
-
-.fab-btn:hover {
-  transform: translateY(-2px);
-}
-
-.fab-btn:active {
-  transform: scale(0.96);
-}
-
-.fab-primary {
-  background: #16a34a;
-  color: #ffffff;
-  border-color: #22c55e;
-}
-
-.fab-primary:hover {
-  background: #15803d;
-}
-
-.fab-secondary {
-  background: var(--bg-card);
-  color: var(--text-main);
-  border-color: var(--border-strong);
-}
-
-.fab-icon {
-  font-size: 18px;
-  line-height: 1;
 }
 
 /* ========================================================================= */
@@ -733,28 +731,27 @@ kbd {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 14px;
-  padding: 16px 22px;
+  gap: 12px;
+  padding: 12px 18px;
   background: var(--bg-subtle);
   border-bottom: 1px solid var(--border-light);
 }
 
 .notepad-header h2 {
   margin: 0;
-  font-size: 18px;
+  font-size: 15.5px;
 }
 
 .notepad-header p {
-  margin: 4px 0 0;
-  font-size: 13.5px;
+  margin: 2px 0 0;
+  font-size: 12.5px;
   color: var(--text-secondary);
 }
 
 .notepad-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .clinical-sheet-textarea {
@@ -762,9 +759,9 @@ kbd {
   width: 100%;
   min-height: 420px;
   border: none;
-  padding: 22px 24px;
+  padding: 20px 24px;
   font: inherit;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.7;
   background: var(--bg-card);
   color: var(--text-main);
@@ -773,45 +770,34 @@ kbd {
 }
 
 /* ========================================================================= */
-/* VISTA 3: CONSTRUCTOR Y GESTOR DE PLANTILLAS                               */
+/* VISTA 3: GESTOR Y CONSTRUCTOR DE PLANTILLAS                               */
 /* ========================================================================= */
 .builder-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .builder-toolbar-right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
 .builder-grid {
   display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 16px;
+  grid-template-columns: 270px 1fr;
+  gap: 14px;
   flex: 1;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 820px) {
   .builder-grid {
     grid-template-columns: 1fr;
-  }
-  .primary-touch-buttons {
-    width: 100%;
-  }
-  .btn-touch {
-    flex: 1;
-  }
-  .floating-dock {
-    right: 14px;
-    left: 14px;
-    justify-content: flex-end;
   }
 }
 
@@ -819,22 +805,22 @@ kbd {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
-  padding: 14px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  max-height: 680px;
+  gap: 8px;
+  max-height: 640px;
 }
 
 .builder-search {
   width: 100%;
-  min-height: 42px;
-  padding: 8px 12px;
+  height: 34px;
+  padding: 0 10px;
   font: inherit;
-  font-size: 15px;
+  font-size: 13px;
   color: var(--text-main);
   background: var(--bg-input);
-  border: 1.5px solid var(--border-strong);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
 }
 
@@ -843,25 +829,25 @@ kbd {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .builder-item {
   text-align: left;
-  padding: 10px 12px;
-  border-radius: var(--radius-md);
-  border: 1.5px solid transparent;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
   background: var(--bg-subtle);
   color: var(--text-main);
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .builder-item.active {
-  background: var(--primary-soft);
-  border-color: var(--primary);
+  background: var(--accent-blue-soft);
+  border-color: var(--accent-blue);
 }
 
 .builder-item-top {
@@ -873,13 +859,13 @@ kbd {
 .builder-item-cmd {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-weight: 700;
-  color: var(--primary);
-  font-size: 13px;
+  color: var(--accent-blue);
+  font-size: 12px;
 }
 
 .builder-item-title {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-main);
 }
 
@@ -887,14 +873,14 @@ kbd {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
-  padding: 20px;
+  padding: 16px 20px;
   box-shadow: var(--shadow-card);
 }
 
 #builderForm {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .builder-form-header {
@@ -902,70 +888,73 @@ kbd {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px;
-  padding-bottom: 12px;
+  gap: 8px;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--border-light);
 }
 
 .builder-form-header h2 {
   margin: 0;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .builder-form-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
 .builder-fields-row {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .field-col {
-  flex: 1 1 160px;
+  flex: 1 1 140px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .field-col-wide {
-  flex: 2 1 260px;
+  flex: 2 1 240px;
 }
 
 .field-col label {
-  font-size: 13.5px;
+  font-size: 12.5px;
   font-weight: 600;
+  color: var(--text-secondary);
 }
 
 .field-col input,
 .field-col textarea {
   width: 100%;
-  padding: 10px 12px;
+  padding: 8px 10px;
   font: inherit;
-  font-size: 16px;
+  font-size: 14px;
   color: var(--text-main);
   background: var(--bg-input);
-  border: 1.5px solid var(--border-strong);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
 }
 
 .field-col textarea {
-  line-height: 1.65;
+  line-height: 1.6;
   resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
 }
 
 .pill-inserter-box {
   background: var(--bg-subtle);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
-  padding: 14px;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .pill-inserter-top {
@@ -973,52 +962,82 @@ kbd {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px;
-  font-size: 14px;
+  gap: 8px;
+  font-size: 12.5px;
+}
+
+.format-helpers {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.inserter-label {
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-right: 4px;
+}
+
+.btn-fmt {
+  height: 26px;
+  padding: 0 9px;
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-main);
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.btn-fmt:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
 }
 
 .custom-pill-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .custom-pill-row input {
-  min-height: 40px;
-  padding: 6px 12px;
+  height: 28px;
+  padding: 0 10px;
   font: inherit;
-  font-size: 15px;
+  font-size: 12.5px;
   color: var(--text-main);
   background: var(--bg-input);
-  border: 1.5px solid var(--border-strong);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
 }
 
 .btn-add-pill {
-  min-height: 40px;
-  padding: 6px 14px;
+  height: 28px;
+  padding: 0 11px;
   font: inherit;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--pill-text);
   background: var(--pill-bg);
-  border: 1.5px solid var(--pill-border);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--pill-border);
+  border-radius: 999px;
   cursor: pointer;
 }
 
 .quick-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 5px;
 }
 
 .pill-chip {
-  min-height: 36px;
-  padding: 5px 12px;
+  height: 26px;
+  padding: 0 9px;
   font: inherit;
-  font-size: 13.5px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--pill-text);
   background: var(--pill-bg);
@@ -1028,15 +1047,15 @@ kbd {
   touch-action: manipulation;
 }
 
-.pill-chip:active {
-  transform: scale(0.96);
+.pill-chip:hover {
+  opacity: 0.9;
 }
 
 /* Modal de Sincronización */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.55);
+  background: rgba(15, 23, 42, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1049,12 +1068,12 @@ kbd {
 }
 
 .modal-dialog {
-  width: min(540px, 100%);
+  width: min(480px, 100%);
   background: var(--bg-card);
   color: var(--text-main);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
   overflow: hidden;
 }
 
@@ -1062,85 +1081,85 @@ kbd {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--border-light);
 }
 
 .modal-header h3 {
   margin: 0;
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .icon-close-btn {
   border: none;
   background: transparent;
-  color: var(--text-main);
-  font-size: 18px;
+  color: var(--text-secondary);
+  font-size: 15px;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 2px 6px;
 }
 
 .modal-body {
-  padding: 18px 20px;
+  padding: 14px 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .modal-body p {
   margin: 0;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-secondary);
 }
 
 .modal-label {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12.5px;
 }
 
 .modal-input {
   width: 100%;
-  min-height: 44px;
-  padding: 10px 12px;
+  height: 36px;
+  padding: 0 10px;
   font: inherit;
-  font-size: 16px;
+  font-size: 13.5px;
   color: var(--text-main);
   background: var(--bg-input);
-  border: 1.5px solid var(--border-strong);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
 }
 
 .modal-hint {
-  font-size: 12.5px !important;
+  font-size: 11.5px !important;
 }
 
 .modal-checkbox {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
+  gap: 6px;
+  font-size: 13px;
   cursor: pointer;
 }
 
 .modal-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  padding: 14px 20px;
+  gap: 8px;
+  padding: 10px 16px;
   background: var(--bg-subtle);
   border-top: 1px solid var(--border-light);
 }
 
-/* Avisos flotantes (Toast) */
+/* Avisos flotantes (Toast) compactos */
 .toast-host {
   position: fixed;
   left: 50%;
-  bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
   transform: translateX(-50%);
   z-index: 2000;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   pointer-events: none;
 }
 
@@ -1148,10 +1167,10 @@ kbd {
   background: #0f172a;
   color: #ffffff;
   border: 1px solid #334155;
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-size: 15px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13px;
   font-weight: 600;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
   text-align: center;
 }
